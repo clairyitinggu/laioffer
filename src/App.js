@@ -1,4 +1,5 @@
 import React from "react";
+import Login from "./Login"
 
 import {
   MDBNavbar,
@@ -21,7 +22,10 @@ import {
   MDBFormInline,
   MDBAnimation,
 } from "mdbreact";
-import { BrowserRouter as Router } from "react-router-dom";
+import {
+  Route,
+  Link
+} from 'react-router-dom';
 // import Routes from "./Routes";
 
 // import "./ClassicFormPage.css";
@@ -61,7 +65,6 @@ class ClassicFormPage extends React.Component {
 
     return (
       <div id="classicformpage">
-        <Router>
           <div>
             <MDBNavbar
               dark
@@ -110,7 +113,7 @@ class ClassicFormPage extends React.Component {
             </MDBNavbar>
             {collapseID && overlay}
           </div>
-        </Router>
+
 
         <MDBView>
           <MDBMask className="d-flex justify-content-center align-items-center gradient" />
@@ -170,6 +173,10 @@ class ClassicFormPage extends React.Component {
                         <MDBBtn color="indigo" gradient="purple" rounded>
                           Sign Up
                         </MDBBtn>
+
+                        <Link to="/login">Or Log In</Link>
+                        <Route path="/login" component={Login}/>
+
                         <hr className="hr-light" />
                         <div className="text-center d-flex justify-content-center white-label">
                           <a href="#!" className="p-2 m-2">
