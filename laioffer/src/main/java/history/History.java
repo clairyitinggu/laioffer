@@ -49,7 +49,11 @@ public class History extends HttpServlet {
 			array.put(obj);
 		}
 		connection.close();
-		RpcHelper.writeJsonArray(response, array);
+		
+		JSONObject object = new JSONObject();
+		object.put("username", username);
+		object.put("orders", array);
+		RpcHelper.writeJsonObject(response, object);
 	}
 
 	/**
