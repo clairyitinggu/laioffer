@@ -5,6 +5,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import entity.Order;
 import entity.Order.OrderBuilder;
@@ -113,5 +115,39 @@ public class MySQLDBConnection {
 			e.printStackTrace();
 		}
 		return robot;
+	}
+	
+	/**
+	 * Getting all orders from data base according to the username
+	 * @param username - the username of current user
+	 * @return list of order objects
+	 */
+	public List<Order> getHistory(String username) {
+		List<Order> history = new ArrayList<>();
+		if(conn == null) {
+			System.err.println("DB connection failed");
+			return history;
+		}
+		
+		String sql = "SELECT * FROM package WHERE username = ?";
+		try {
+			PreparedStatement statement = conn.prepareStatement(sql);
+			statement.setString(1, username);
+			ResultSet rs = statement.executeQuery();
+			OrderBuilder builder = new OrderBuilder();
+			while(rs.next()) {
+				Order order = builder.setUsername(rs.getString("username"))
+						.setTrackingNumber(rs.getString("tracking_number"))
+						.setStart(rs.getString("start"))
+						.setDestination(rs.getString("destination"))
+						.setStatus(rs.getString("status"))
+						.setRobotId(rs.getString("robot_id"))
+						.build();
+				history.add(order);
+			}
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return history;
 	}
 }
