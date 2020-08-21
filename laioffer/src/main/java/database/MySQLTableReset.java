@@ -41,32 +41,37 @@ public class MySQLTableReset {
 					+ "username VARCHAR(255) NOT NULL," 
 					+ "password VARCHAR(255) NOT NULL,"
 					+ "email VARCHAR(255) NOT NULL," 
-					+ "PRIMARY KEY (username)" + ")";
+					+ "PRIMARY KEY (username)" 
+					+ ")";
 			statement.executeUpdate(sql);
 
 			sql = "CREATE TABLE payment (" 
 					+ "payment_id VARCHAR(255) NOT NULL,"
 					+ "tracking_number VARCHAR(255) NOT NULL," 
-					+ "PRIMARY KEY (payment_id)" + ")";
+					+ "PRIMARY KEY (payment_id)" 
+					+ ")";
 			statement.executeUpdate(sql);
 
 			sql = "CREATE TABLE robot ("
 					+ "robot_id VARCHAR(255) NOT NULL," 
+					+ "type VARCHAR(255) NOT NULL,"
 					+ "tracking_number VARCHAR(255),"
 					+ "status VARCHAR(255)," 
-					+ "PRIMARY KEY (robot_id)" + ")";
+					+ "PRIMARY KEY (robot_id)" 
+					+ ")";
 			statement.executeUpdate(sql);
 
 			// the payment and robot table may link to order for later implementation
 			sql = "CREATE TABLE package (" 
 					+ "tracking_number VARCHAR(255) NOT NULL,"
 					+ "username VARCHAR(255) NOT NULL," 
-					+ "start_location VARCHAR(255) NOT NULL,"
+					+ "start VARCHAR(255) NOT NULL,"
 					+ "destination VARCHAR(255) NOT NULL," 
 					+ "status VARCHAR(255) NOT NULL,"
 					+ "robot_id VARCHAR(255) NOT NULL," 
 					+ "PRIMARY KEY (tracking_number, username),"
-					+ "FOREIGN KEY (username) REFERENCES user(username)" + ")";
+					+ "FOREIGN KEY (username) REFERENCES user(username)"
+					+ ")";
 			statement.executeUpdate(sql);
 
 			// Step 4: insert fake data
@@ -127,6 +132,7 @@ public class MySQLTableReset {
 			// insert robot
 			sql = "INSERT INTO robot VALUES(" 
 					+ "'1', " 
+					+ "'robot', "
 					+ "'123459876', " 
 					+ "'busy'" 
 					+ ")";
@@ -134,6 +140,7 @@ public class MySQLTableReset {
 
 			sql = "INSERT INTO robot VALUES(" 
 					+ "'2', " 
+					+ "'robot', "
 					+ "'987654321', " 
 					+ "'busy' " 
 					+ ")";
@@ -141,6 +148,7 @@ public class MySQLTableReset {
 
 			sql = "INSERT INTO robot VALUES(" 
 					+ "'3', " 
+					+ "'drone', "
 					+ "null, " 
 					+ "'free'" 
 					+ ")";
