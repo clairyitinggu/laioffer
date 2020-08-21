@@ -10,6 +10,7 @@ import org.json.JSONObject;
 
 import database.MySQLDBConnection;
 import entity.Order;
+import entity.Robot;
 import rpcHelper.RpcHelper;
 
 /**
@@ -35,10 +36,16 @@ public class Tracking extends HttpServlet {
 
 		MySQLDBConnection connection = new MySQLDBConnection();
 		Order order = connection.getTrackOrder(trackingNumber);
+		
+		JSONObject object;
+		if(order == null) {
+			object = new JSONObject();
+		} else {
+			object = order.toJSONObject();
+			Robot robot = connection.getRobot(order.getRobotId());
+			object.put("method", robot.getType());
+		}
 		connection.close();
-		
-		JSONObject object = order == null ? new JSONObject() : order.toJSONObject();
-		
 		RpcHelper.writeJsonObject(response, object);
 	}
 

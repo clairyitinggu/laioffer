@@ -8,6 +8,8 @@ import java.sql.SQLException;
 
 import entity.Order;
 import entity.Order.OrderBuilder;
+import entity.Robot;
+import entity.Robot.RobotBuilder;
 
 /**
  * This class is client access to mysql database
@@ -45,7 +47,7 @@ public class MySQLDBConnection {
 	}
 	
 	/**
-	 * 
+	 * Getting order from data base according to tracking number
 	 * @param trackingNumber - tracking number of order to be tracked
 	 * @return the order object corresponding to such tracking number
 	 *            null if no such order
@@ -56,7 +58,7 @@ public class MySQLDBConnection {
 			return null;
 		}
 		
-		Order result = null;
+		Order order = null;
 		String sql = "SELECT * FROM package WHERE tracking_number = ?";
 		try {
 			PreparedStatement statement = conn.prepareStatement(sql);
@@ -66,7 +68,7 @@ public class MySQLDBConnection {
 			
 			OrderBuilder builder = new OrderBuilder();
 			if(rs.next()) {
-				result = builder.setUsername(rs.getString("username"))
+				order = builder.setUsername(rs.getString("username"))
 								.setTrackingNumber(rs.getString("tracking_number"))
 								.setStart(rs.getString("start"))
 								.setDestination(rs.getString("destination"))
@@ -77,6 +79,39 @@ public class MySQLDBConnection {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return result;
+		return order;
+	}
+	
+	/**
+	 * Getting robot from data base according to robot id
+	 * @param robotId - id of robot to be selected
+	 * @return object of robot 
+	 */
+	public Robot getRobot(String robotId) {
+		if(conn == null) {
+			System.err.println("DB connection failed");
+			return null;
+		}
+		
+		Robot robot = null;
+		String sql = "SELECT * FROM robot WHERE robot_id = ?";
+		try {
+			PreparedStatement statement = conn.prepareStatement(sql);
+			statement.setString(1, robotId);
+			ResultSet rs = statement.executeQuery();
+			
+			
+			RobotBuilder builder = new RobotBuilder();
+			if(rs.next()) {
+				robot = builder.setRobotId(rs.getString("robot_id"))
+								.setType(rs.getString("type"))
+								.setStatus(rs.getString("status"))
+								.setTrackingNumber(rs.getString("tracking_number"))
+								.build();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return robot;
 	}
 }
