@@ -150,4 +150,23 @@ public class MySQLDBConnection {
 		}
 		return history;
 	}
+	
+	public boolean addUser(String username, String password, String email) {
+		if (conn == null) {
+			System.err.println("DB connection failed");
+			return false;
+		}
+
+		String sql = "INSERT IGNORE INTO user VALUES (?, ?, ?)";
+		try {
+			PreparedStatement statement = conn.prepareStatement(sql);
+			statement.setString(1, username);
+			statement.setString(2, password);
+			statement.setString(3, email);
+			return statement.executeUpdate() == 1;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
 }
