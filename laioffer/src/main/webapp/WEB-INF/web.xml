@@ -16,12 +16,6 @@
   	<description></description>
   	<servlet-class>history.History</servlet-class>
   </servlet>
-  <servlet>
-  	<servlet-name>Register</servlet-name>
-  	<display-name>Register</display-name>
-  	<description></description>
-  	<servlet-class>register.Register</servlet-class>
-  </servlet>
   <servlet-mapping>
   	<servlet-name>Tracking</servlet-name>
   	<url-pattern>/tracking</url-pattern>
@@ -29,9 +23,5 @@
   <servlet-mapping>
   <servlet-name>History</servlet-name>
   	<url-pattern>/history</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-  	<servlet-name>Register</servlet-name>
-  	<url-pattern>/register</url-pattern>
   </servlet-mapping>
 </web-app>
