@@ -55,14 +55,14 @@ class ClassicFormPage extends React.Component {
   componentWillUnmount() {
     document.querySelector("nav").style.height = "auto";
   }
-
-  getLogin = () => {
-    return this.props.isLoggedIn ? <Redirect to="/home"/> :
-        <Login handleLoginSucceed={this.props.handleLoginSucceed}/>;
-  }
-  getHome = () => {
-    return this.props.isLoggedIn ? <Home/> : <Redirect to="/login"/>;
-  }
+  //
+  // getLogin = () => {
+  //   return this.props.isLoggedIn ? <Redirect to="/home"/> :
+  //       <Login handleLoginSucceed={this.props.handleLoginSucceed}/>;
+  // }
+  // getHome = () => {
+  //   return this.props.isLoggedIn ? <Home/> : <Redirect to="/login"/>;
+  // }
 
   render() {
     const { collapseID } = this.state;
