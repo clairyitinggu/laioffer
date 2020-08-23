@@ -150,4 +150,52 @@ public class MySQLDBConnection {
 		}
 		return history;
 	}
+	
+	/**
+	 * Save order into database
+	 * @param order - the order to be saved
+	 */
+	public void setOrder(Order order) {
+		if(conn == null) {
+			System.err.println("DB connection failed");
+			return;
+		}
+		
+		String sql = "INSERT IGNORE INTO package VALUES (?,?,?,?,?,?)";
+		try {
+			PreparedStatement statement = conn.prepareStatement(sql);
+			statement.setString(1, order.getTrackingNumber());
+			statement.setString(2, order.getUsername());
+			statement.setString(3, order.getStart());
+			statement.setString(4, order.getDestination());
+			statement.setString(5, order.getStatus());
+			statement.setString(6, order.getRobotId());
+			statement.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * set the robot to handle an order
+	 * @return
+	 */
+	public void setRobot(Robot robot) {
+		if(conn == null) {
+			System.err.println("DB connection failed");
+			return;
+		}
+		
+		String sql = "INSERT IGNORE INTO robot VALUES (?,?,?,?)";
+		try {
+			PreparedStatement statement = conn.prepareStatement(sql);
+			statement.setString(1, robot.getRobotId());
+			statement.setString(2, robot.getType());
+			statement.setString(3, robot.getTrackingNumber());
+			statement.setString(4, robot.getStatus());
+			statement.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 }

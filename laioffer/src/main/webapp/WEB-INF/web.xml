@@ -16,6 +16,12 @@
   	<description></description>
   	<servlet-class>history.History</servlet-class>
   </servlet>
+  <servlet>
+  	<servlet-name>PlacingOrder</servlet-name>
+  	<display-name>PlacingOrder</display-name>
+  	<description></description>
+  	<servlet-class>placingOrder.PlacingOrder</servlet-class>
+  </servlet>
   <servlet-mapping>
   	<servlet-name>Tracking</servlet-name>
   	<url-pattern>/tracking</url-pattern>
@@ -23,5 +29,9 @@
   <servlet-mapping>
   <servlet-name>History</servlet-name>
   	<url-pattern>/history</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>PlacingOrder</servlet-name>
+  	<url-pattern>/placingorder</url-pattern>
   </servlet-mapping>
 </web-app>

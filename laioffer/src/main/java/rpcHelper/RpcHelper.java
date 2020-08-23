@@ -32,6 +32,5 @@ public class RpcHelper {
 	public static void writeJsonObject(HttpServletResponse response, JSONObject object) throws IOException {
 		response.setContentType("application/json");
 		response.getWriter().print(object);
-	}
-	
+	}	
 }
