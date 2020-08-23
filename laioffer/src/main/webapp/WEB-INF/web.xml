@@ -17,10 +17,17 @@
   	<servlet-class>history.History</servlet-class>
   </servlet>
   <servlet>
+<<<<<<< HEAD
   	<servlet-name>PlacingOrder</servlet-name>
   	<display-name>PlacingOrder</display-name>
   	<description></description>
   	<servlet-class>placingOrder.PlacingOrder</servlet-class>
+=======
+  	<servlet-name>Register</servlet-name>
+  	<display-name>Register</display-name>
+  	<description></description>
+  	<servlet-class>register.Register</servlet-class>
+>>>>>>> refs/remotes/origin/backend
   </servlet>
   <servlet-mapping>
   	<servlet-name>Tracking</servlet-name>
@@ -31,7 +38,12 @@
   	<url-pattern>/history</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
+<<<<<<< HEAD
   	<servlet-name>PlacingOrder</servlet-name>
   	<url-pattern>/placingorder</url-pattern>
+=======
+  	<servlet-name>Register</servlet-name>
+  	<url-pattern>/register</url-pattern>
+>>>>>>> refs/remotes/origin/backend
   </servlet-mapping>
 </web-app>
