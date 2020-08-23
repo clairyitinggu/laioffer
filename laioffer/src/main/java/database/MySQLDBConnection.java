@@ -151,7 +151,6 @@ public class MySQLDBConnection {
 		return history;
 	}
 	
-<<<<<<< HEAD
 	/**
 	 * Save order into database
 	 * @param order - the order to be saved
@@ -198,7 +197,15 @@ public class MySQLDBConnection {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-=======
+	}
+
+	/**
+	 * Adding user
+	 * @param username
+	 * @param password
+	 * @param email
+	 * @return
+	 */
 	public boolean addUser(String username, String password, String email) {
 		if (conn == null) {
 			System.err.println("DB connection failed");
@@ -216,6 +223,5 @@ public class MySQLDBConnection {
 			e.printStackTrace();
 		}
 		return false;
->>>>>>> refs/remotes/origin/backend
 	}
 }
