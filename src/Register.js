@@ -14,7 +14,7 @@ const Register = () => {
                                 </h3>
                                 <hr className="hr-light" />
                                 <MDBInput
-                                    className="white-text"
+                                   className="white-text"
                                     iconClass="white-text"
                                     label="Your name"
                                     icon="user"
@@ -37,7 +37,7 @@ const Register = () => {
                                         Sign Up
                                     </MDBBtn>
 
-                                    <Link to="/login">Or Log In</Link>
+                                    <Link className="white-text"  to="/login">Or login now</Link>
 
 
                                     <hr className="hr-light" />

@@ -31,7 +31,7 @@ const Login = () => {
                                 Sign In
                             </MDBBtn>
 
-                            <p>Or <Link to="/register">register now!</Link></p>
+                             <Link className="white-text" to="/register">Or register now!</Link>
 
 
 
