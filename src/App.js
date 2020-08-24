@@ -1,4 +1,7 @@
 import React from "react";
+import Login from "./Login"
+import Register from "./Register"
+
 
 import {
   MDBNavbar,
@@ -21,7 +24,11 @@ import {
   MDBFormInline,
   MDBAnimation,
 } from "mdbreact";
-import { BrowserRouter as Router } from "react-router-dom";
+import {
+  Route,
+  Link,
+    Switch, Redirect
+} from 'react-router-dom';
 // import Routes from "./Routes";
 
 // import "./ClassicFormPage.css";
@@ -48,6 +55,14 @@ class ClassicFormPage extends React.Component {
   componentWillUnmount() {
     document.querySelector("nav").style.height = "auto";
   }
+  //
+  // getLogin = () => {
+  //   return this.props.isLoggedIn ? <Redirect to="/home"/> :
+  //       <Login handleLoginSucceed={this.props.handleLoginSucceed}/>;
+  // }
+  // getHome = () => {
+  //   return this.props.isLoggedIn ? <Home/> : <Redirect to="/login"/>;
+  // }
 
   render() {
     const { collapseID } = this.state;
@@ -61,7 +76,6 @@ class ClassicFormPage extends React.Component {
 
     return (
       <div id="classicformpage">
-        <Router>
           <div>
             <MDBNavbar
               dark
@@ -110,7 +124,7 @@ class ClassicFormPage extends React.Component {
             </MDBNavbar>
             {collapseID && overlay}
           </div>
-        </Router>
+
 
         <MDBView>
           <MDBMask className="d-flex justify-content-center align-items-center gradient" />
@@ -120,9 +134,9 @@ class ClassicFormPage extends React.Component {
           >
             <MDBRow>
               <MDBAnimation
-                type="fadeInLeft"
-                delay=".3s"
-                className="white-text text-center text-md-left col-md-6 mt-xl-5 mb-5"
+                  type="fadeInLeft"
+                  delay=".3s"
+                  className="white-text text-center text-md-left col-md-6 mt-xl-5 mb-5 text-on-left"
               >
                 <h1 className="h1-responsive font-weight-bold">
                   Sign up right now!
@@ -138,78 +152,24 @@ class ClassicFormPage extends React.Component {
                   Learn More
                 </MDBBtn>
               </MDBAnimation>
-
-              <MDBCol md="6" xl="5" className="mb-4">
-                <MDBAnimation type="fadeInRight" delay=".3s">
-                  <MDBCard id="classic-card">
-                    <MDBCardBody className="white-text">
-                      <h3 className="text-center">
-                        <MDBIcon icon="user" /> Register:
-                      </h3>
-                      <hr className="hr-light" />
-                      <MDBInput
-                        className="white-text"
-                        iconClass="white-text"
-                        label="Your name"
-                        icon="user"
-                      />
-                      <MDBInput
-                        className="white-text"
-                        iconClass="white-text"
-                        label="Your email"
-                        icon="envelope"
-                      />
-                      <MDBInput
-                        className="white-text"
-                        iconClass="white-text"
-                        label="Your password"
-                        icon="lock"
-                        type="password"
-                      />
-                      <div className="text-center mt-4 black-text">
-                        <MDBBtn color="indigo" gradient="purple" rounded>
-                          Sign Up
-                        </MDBBtn>
-                        <hr className="hr-light" />
-                        <div className="text-center d-flex justify-content-center white-label">
-                          <a href="#!" className="p-2 m-2">
-                            <MDBIcon
-                              fab
-                              icon="twitter"
-                              className="white-text"
-                            />
-                          </a>
-                          <a href="#!" className="p-2 m-2">
-                            <MDBIcon
-                              fab
-                              icon="linkedin"
-                              className="white-text"
-                            />
-                          </a>
-                          <a href="#!" className="p-2 m-2">
-                            <MDBIcon
-                              fab
-                              icon="instagram"
-                              className="white-text"
-                            />
-                          </a>
-                        </div>
-                      </div>
-                    </MDBCardBody>
-                  </MDBCard>
-                </MDBAnimation>
-              </MDBCol>
+              <Switch>
+                <Route path="/register" component={Register}/>
+                <Route path="/login" component={Login}/>
+                <Route path="/" component={Register}/>
+              </Switch>
             </MDBRow>
+
           </MDBContainer>
         </MDBView>
 
         <MDBContainer>
           <MDBRow className="py-5">
             <MDBCol md="12" className="text-center">
-              <p></p>
+              <p>laksjbdflkjablsjfbla</p>
             </MDBCol>
           </MDBRow>
         </MDBContainer>
+
       </div>
     );
   }
