@@ -12,6 +12,7 @@ import entity.Order;
 import entity.Order.OrderBuilder;
 import entity.Robot;
 import entity.Robot.RobotBuilder;
+import entity.User;
 
 /**
  * This class is client access to mysql database
@@ -223,5 +224,40 @@ public class MySQLDBConnection {
 			e.printStackTrace();
 		}
 		return false;
+	}
+
+	/**
+     * Checking login
+     * @param email
+     * @param password
+     * @return
+     */
+
+	public User checkLogin(String email, String password) {
+		String jdbcURL = MySQLDBConstant.URL;
+		String dbUser = MySQLDBConstant.USERNAME;
+		String dbPassword = MySQLDBConstant.PASSWORD;
+
+
+		String sql = "SELECT * FROM users WHERE email = ? and password = ?";
+		User user = null;
+		try {
+			PreparedStatement statement = conn.prepareStatement(sql);
+			statement.setString(1, email);
+			statement.setString(2, password);
+			ResultSet result = statement.executeQuery();
+
+			if (result.next()) {
+				User.UserBuilder builder = new User.UserBuilder();
+				builder.setName(result.getString("name"));
+				builder.setEmail(email);
+				user = builder.build();
+			}
+			conn.close();
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return user;
+
 	}
 }

@@ -26,7 +26,7 @@ public class RpcHelper {
 	/**
 	 * 
 	 * @param response - http response object
-	 * @param obj - json object will be written into response body
+	 * @param object - json object will be written into response body
 	 * @throws IOException
 	 */
 	public static void writeJsonObject(HttpServletResponse response, JSONObject object) throws IOException {
