@@ -14,8 +14,7 @@ import {
 import {Link, Route} from "react-router-dom";
 import LearnMore from "./LearnMore";
 
-
-const Login = () => {
+const Register = () => {
     return (
         <MDBView>
             <MDBMask className="d-flex justify-content-center align-items-center gradient" />
@@ -30,7 +29,7 @@ const Login = () => {
                             <MDBCard id="classic-card">
                                 <MDBCardBody className="white-text">
                                     <h3 className="text-center">
-                                        <MDBIcon icon="user" /> Log In:
+                                        <MDBIcon icon="user" /> Register:
                                     </h3>
                                     <hr className="hr-light" />
                                     <MDBInput
@@ -42,17 +41,22 @@ const Login = () => {
                                     <MDBInput
                                         className="white-text"
                                         iconClass="white-text"
+                                        label="Your email"
+                                        icon="envelope"
+                                    />
+                                    <MDBInput
+                                        className="white-text"
+                                        iconClass="white-text"
                                         label="Your password"
                                         icon="lock"
                                         type="password"
                                     />
                                     <div className="text-center mt-4 black-text">
                                         <MDBBtn color="indigo" gradient="purple" rounded>
-                                            Sign In
+                                            Sign Up
                                         </MDBBtn>
 
-                                        <Link className="white-text" to="/register">Or register now!</Link>
-
+                                        <Link className="white-text"  to="/login">Or login now</Link>
 
 
                                         <hr className="hr-light" />
@@ -83,13 +87,16 @@ const Login = () => {
                                 </MDBCardBody>
                             </MDBCard>
                         </MDBAnimation>
-                    </MDBCol>
+                </MDBCol>
                 </MDBContainer>
             </div>
         </MDBView>
 
 
+
+
+
     );
 };
 
-export default Login;
+export default Register;
