@@ -8,14 +8,11 @@ import Form from "./components/Form";
 import registerServiceWorker from "./registerServiceWorker";
 import { BrowserRouter } from "react-router-dom";
 
-<<<<<<< HEAD
-ReactDOM.render(<Form />, document.getElementById("root"));
-=======
 ReactDOM.render(
-    <BrowserRouter>
-        <App />
-    </BrowserRouter>,
-    document.getElementById("root"));
->>>>>>> 840b046b9336df31c3cbfba308db6233ccf9524f
+  <BrowserRouter>
+    <Form />
+  </BrowserRouter>,
+  document.getElementById("root")
+);
 
 registerServiceWorker();
