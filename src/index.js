@@ -7,15 +7,16 @@ import "./assets/css/style.css";
 import Form from "./components/Form";
 import registerServiceWorker from "./registerServiceWorker";
 import { BrowserRouter } from "react-router-dom";
+import App from "./App";
 
-<<<<<<< HEAD
-ReactDOM.render(<Form />, document.getElementById("root"));
-=======
+
+// ReactDOM.render(<Form />, document.getElementById("root"));
+
 ReactDOM.render(
     <BrowserRouter>
         <App />
     </BrowserRouter>,
     document.getElementById("root"));
->>>>>>> 840b046b9336df31c3cbfba308db6233ccf9524f
+
 
 registerServiceWorker();
