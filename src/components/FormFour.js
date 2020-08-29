@@ -1,23 +1,48 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from "react";
 import "./form.css";
-import { Descriptions, Button } from 'antd';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { fetchEstimateTime, fetchMoney, fetchOrderID } from '../actions'
+import { Descriptions, Button } from "antd";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import { robot, prone } from "../constants";
+import { setEstimateTime, setMoney } from "../actions";
 
-const FormFour = props => {
-  const { senderName, dispatcher, senderPhone, render, senderAddress, senderZip, receiverName, receiverPhone, receiverAddress, receiverZip, shippingMethod, estimateTime, money, orderID } = props;
+const FormFour = (props) => {
+  const {
+    senderName,
+    dispatcher,
+    senderPhone,
+    render,
+    senderAddress,
+    senderZip,
+    receiverName,
+    receiverPhone,
+    receiverAddress,
+    receiverZip,
+    shippingMethod,
+    distance,
+    secondDistance,
+    estimateTime,
+    money,
+  } = props;
   useEffect(() => {
-    const fetch = async () => {
-      props.fetchEstimateTime();
-      props.fetchMoney();
-      props.fetchOrderID();
+    if (shippingMethod === "Robot") {
+      props.setEstimateTime(
+        distance / robot.KMPerHour + secondDistance / robot.KMPerHour
+      );
+      props.setMoney(
+        distance * robot.dollarPerKM + secondDistance * robot.dollarPerKM
+      );
+    } else {
+      props.setEstimateTime(
+        distance / prone.KMPerHour + secondDistance / prone.KMPerHour
+      );
+      props.setMoney(
+        distance * prone.dollarPerKM + secondDistance * prone.dollarPerKM
+      );
     }
-    fetch();
   }, []);
 
   const data = (() => {
-    console.log(render);
     if (!render) {
       return {
         Sender_Name: senderName,
@@ -27,10 +52,9 @@ const FormFour = props => {
         Receiver_Phone: receiverPhone,
         Receiver_Address: `${receiverAddress}, San Francisco, CA, ${receiverZip}`,
         Shipping_Method: shippingMethod,
-        Estimate_DELIVERY_Time: estimateTime,
-        Money: money,
-        Order_ID: orderID
-      }
+        Estimate_Time: `${estimateTime} hr`,
+        money: `$${money}`,
+      };
     }
     return {
       Sender_Name: senderName,
@@ -41,26 +65,28 @@ const FormFour = props => {
       Receiver_Phone: receiverPhone,
       Receiver_Address: `${receiverAddress}, San Francisco, CA, ${receiverZip}`,
       Shipping_Method: shippingMethod,
-      Estimate_DELIVERY_Time: estimateTime,
-      Money: money,
-      Order_ID: orderID
-    }
+      Estimate_Time: `${estimateTime} hr`,
+      money: `${money}`,
+    };
   })();
 
   const renderAll = (() => {
     const arr = [];
     for (const [key, value] of Object.entries(data)) {
-      arr.push(<Descriptions.Item key={key} label={key}>{value}</Descriptions.Item>)
+      arr.push(
+        <Descriptions.Item key={key} label={key}>
+          {value}
+        </Descriptions.Item>
+      );
     }
     return arr;
   })();
 
   return (
     <div className="form-container ">
-      <Descriptions title="User Info">
-        {renderAll}
-      </Descriptions>
-      <br /><br />
+      <Descriptions title="User Info">{renderAll}</Descriptions>
+      <br />
+      <br />
       <div className="btn-group">
         <Link to="/form/3">
           <Button className="btn-left" type="primary" htmlType="submit">
@@ -75,10 +101,9 @@ const FormFour = props => {
       </div>
     </div>
   );
+};
 
-}
-
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     senderName: state.order.senderName,
     dispatcher: state.order.dispatcher,
@@ -91,9 +116,12 @@ const mapStateToProps = state => {
     receiverAddress: state.order.receiverAddress,
     receiverZip: state.order.receiverZip,
     shippingMethod: state.order.shippingMethod,
-    estimateTime: state.order.estimateTime,
-    money: state.order.money,
-    orderID: state.order.orderID
-  }
-}
-export default connect(mapStateToProps, { fetchEstimateTime, fetchMoney, fetchOrderID })(FormFour);
+    distance: state.route.distance,
+    secondDistance: state.route.secondDistance,
+    money: state.route.money,
+    estimateTime: state.route.estimateTime,
+  };
+};
+export default connect(mapStateToProps, { setEstimateTime, setMoney })(
+  FormFour
+);

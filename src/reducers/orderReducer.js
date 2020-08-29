@@ -1,7 +1,6 @@
 export default (state = {
   senderName: '', dispatcher: null, senderPhone: '', render: false, senderAddress: '', senderZip: '', 
   receiverName: '', receiverPhone: '', receiverAddress: '', receiverZip: '', shippingMethod: null,
-  estimateTime: '', money: '', shippingID: ''
 }, action) => {
   switch (action.type) {
     case 'SET_SENDER_NAME':
@@ -29,12 +28,6 @@ export default (state = {
     case 'SET_SHIPPING_METHOD':
       return { ...state, shippingMethod: action.payload }
 
-    case 'FETCH_ESTIMATE_TIME':
-      return { ...state, estimateTime: action.payload.data[0].vat }
-    case 'FETCH_MONEY':
-      return { ...state, money: action.payload.data[1].vat }
-    case 'FETCH_ORDER_ID':
-      return { ...state, orderID: action.payload.data[3].vat }
     default:
       return state;
   }

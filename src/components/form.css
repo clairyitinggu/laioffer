@@ -1,4 +1,4 @@
-@import '~antd/dist/antd.css';
+@import "~antd/dist/antd.css";
 
 .btn-group {
   display: flex;
@@ -6,20 +6,25 @@
 }
 
 .btn-right {
-  float:right;
+  float: right;
 }
 
-.outer-container {
-  /* display: flex; */
-  padding: 0;
+.map-container {
+  margin: 40px;
   width: 50%;
 }
 
+.route-container {
+  display: flex;
+  justify-content: space-between;
+  padding: 0;
+  width: 100%;
+}
 
 .form-container {
   padding: 40px;
   margin: 40px;
-  width: 100%;
+  width: 50vw;
   border: 1px #ccc solid;
   border-radius: 2px;
 }
