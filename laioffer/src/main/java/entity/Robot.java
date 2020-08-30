@@ -11,12 +11,14 @@ public class Robot {
 	private String type;
 	private String status;
 	private String trackingNumber;
+	private String dispatcher;
 
 	private Robot(RobotBuilder builder) {
 		this.robotId = builder.robotId;
 		this.type = builder.type;
 		this.status = builder.status;
 		this.trackingNumber = builder.trackingNumber;
+		this.dispatcher = builder.dispatcher;
 	}
 	
 	public String getRobotId() {
@@ -35,6 +37,10 @@ public class Robot {
 		return trackingNumber;
 	}
 	
+	public String getDispatcher() {
+		return dispatcher;
+	}
+	
 	public JSONObject toJSONObject() {
 		JSONObject object = new JSONObject();
 		object.put("robot_id", this.robotId);
@@ -49,6 +55,7 @@ public class Robot {
 		private String type;
 		private String status;
 		private String trackingNumber;
+		private String dispatcher;
 
 		public RobotBuilder setRobotId(String robotId) {
 			this.robotId = robotId;
@@ -67,6 +74,11 @@ public class Robot {
 
 		public RobotBuilder setTrackingNumber(String trackingNumber) {
 			this.trackingNumber = trackingNumber;
+			return this;
+		}
+		
+		public RobotBuilder setDispatcher(String dispatcher) {
+			this.dispatcher = dispatcher;
 			return this;
 		}
 		

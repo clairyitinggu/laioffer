@@ -57,6 +57,7 @@ public class MySQLTableReset {
 					+ "type VARCHAR(255) NOT NULL,"
 					+ "tracking_number VARCHAR(255),"
 					+ "status VARCHAR(255)," 
+					+ "dispatcher VARCHAR(255),"
 					+ "PRIMARY KEY (robot_id)" 
 					+ ")";
 			statement.executeUpdate(sql);
@@ -130,29 +131,19 @@ public class MySQLTableReset {
 			statement.executeUpdate(sql);
 
 			// insert robot
-			sql = "INSERT INTO robot VALUES(" 
-					+ "'1', " 
-					+ "'robot', "
-					+ "'123459876', " 
-					+ "'busy'" 
-					+ ")";
-			statement.executeUpdate(sql);
-
-			sql = "INSERT INTO robot VALUES(" 
-					+ "'2', " 
-					+ "'robot', "
-					+ "'987654321', " 
-					+ "'busy' " 
-					+ ")";
-			statement.executeUpdate(sql);
-
-			sql = "INSERT INTO robot VALUES(" 
-					+ "'3', " 
-					+ "'drone', "
-					+ "null, " 
-					+ "'free'" 
-					+ ")";
-			statement.executeUpdate(sql);
+			for(int i = 0; i < 9; i++) {
+				String robot = i % 3 == 0 ? "'drone'" : "'robot'";
+				String robotid = i % 3 == 0 ? "'drone" + i + "'": "'robot" + i + "'";
+				String dispatcher = "'dispatcher " + i / 3 + "'";
+				sql = "INSERT INTO robot VALUES(" 
+						+ robotid + ", " 
+						+ robot + ", "
+						+ "null, " 
+						+ "'free', "
+						+ dispatcher
+						+ ")";
+				statement.executeUpdate(sql);
+			}
 
 			conn.close();
 			System.out.println("Import done successfully");

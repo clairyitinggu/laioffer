@@ -1,18 +1,23 @@
 package placingOrder;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import database.MySQLDBConnection;
 import entity.Order;
 import entity.Robot;
+import robotManagement.Point;
 import rpcHelper.RpcHelper;
 
 /**
@@ -43,23 +48,35 @@ public class PlacingOrder extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		JSONObject input = new JSONObject(IOUtils.toString(request.getReader()));
-		JSONObject object = new JSONObject();;
+		JSONObject object = new JSONObject();
+		
 		try {
 			String username = input.getString("username");
 			String start = input.getString("start");
 			String destination = input.getString("destination");
 			String method = input.getString("method");
+			JSONArray route = input.getJSONArray("route");
+			List<Point> points = new ArrayList<>();
+			
+			for(int i = 0; i < route.length(); i++) {
+				JSONObject obj = route.getJSONObject(i);
+				Point point = new Point(obj.getDouble("lat"), obj.getDouble("lng"));
+				points.add(point);
+			}
 			
 			CreateOrder creation = new CreateOrder();
-			Order order = creation.createOrder(username, start, destination, method);
+			Order order = creation.createOrder(username, start, destination, method, start, points);
 			object = order.toJSONObject();
 			
 			MySQLDBConnection connection = new MySQLDBConnection();
 			Robot robot = connection.getRobot(order.getRobotId());
 			object.put("method", robot.getType());
+			connection.close();
 			
 		} catch (JSONException e) {
 			object.put("status", "Can not place order, information missing");
+		} catch (NullPointerException e) {
+			object.put("status", "No Free Robot");
 		}
 		
 		RpcHelper.writeJsonObject(response, object);

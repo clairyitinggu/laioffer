@@ -56,6 +56,18 @@
 		<description></description>
 		<servlet-class>register.Register</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>ResetSimulator</servlet-name>
+		<display-name>ResetSimulator</display-name>
+		<description></description>
+		<servlet-class>resetSimulater.ResetSimulator</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>Location</servlet-name>
+		<display-name>Location</display-name>
+		<description></description>
+		<servlet-class>tracking.Location</servlet-class>
+	</servlet>
 	<servlet-mapping>
 		<servlet-name>Tracking</servlet-name>
 		<url-pattern>/tracking</url-pattern>
@@ -71,5 +83,13 @@
 	<servlet-mapping>
 		<servlet-name>Register</servlet-name>
 		<url-pattern>/register</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>ResetSimulator</servlet-name>
+		<url-pattern>/reset_simulator</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>Location</servlet-name>
+		<url-pattern>/location</url-pattern>
 	</servlet-mapping>
 </web-app>

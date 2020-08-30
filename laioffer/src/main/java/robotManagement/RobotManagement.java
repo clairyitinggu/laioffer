@@ -1,5 +1,12 @@
 package robotManagement;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Timer;
+
+import robotManagement.Point;
 import database.MySQLDBConnection;
 import entity.Robot;
 import entity.Robot.RobotBuilder;
@@ -11,21 +18,78 @@ import entity.Robot.RobotBuilder;
  */
 public class RobotManagement {
 	
+	private static Map<String, RobotSimulator> robots = new HashMap<>();
+	
 	/**
 	 * Assigning free robot to work
 	 * @param trackingNumber - the tracking number of order
 	 * @param method - the user selected shipping method
 	 * @return the assigned robot object
 	 */
-	public Robot getFreeRobot(String trackingNumber, String method) {
-		RobotBuilder builder = new RobotBuilder();
-		Robot robot = builder.setRobotId(String.valueOf((int) Math.random() * 50))
-				.setTrackingNumber(trackingNumber).setStatus("busy").setType(method).build();
+	public static Robot getFreeRobot(String trackingNumber, String method, String dispatcher, List<Point> route) {
+		if(robots.size() == 0) {
+			initializeRobots();
+		}
 		MySQLDBConnection connection = new MySQLDBConnection();
-		connection.setRobot(robot);
+		Robot robot = connection.getFreeRobot(dispatcher, method);
+		if(robot == null) {
+			return null;
+		}
+		connection.setRobot(trackingNumber, robot.getRobotId(), "busy");
 		connection.close();
+
+		RobotSimulator simulator = robots.get(robot.getRobotId());
+		simulator.start(trackingNumber, route);
 		return robot;
 	}
 	
+	/**
+	 * Free the robot after finish job
+	 * @param robotId - id of the robot finish shipping
+	 */
+	public static void setFreeRobot(String robotId) {
+		MySQLDBConnection connection = new MySQLDBConnection();
+		connection.setRobot(null, robotId, "free");
+		connection.close();
+	}
 	
+	public static void delivered(String trackingNumber) {
+		MySQLDBConnection connection = new MySQLDBConnection();
+		connection.deliveredOrder(trackingNumber);
+		connection.close();
+	}
+	
+	/**
+	 * Getting current location point of a robot
+	 * @param robotId - id of robot
+	 * @return location point of the robot
+	 */
+	public static Point getLocation(String robotId) {
+		RobotSimulator simulator = robots.get(robotId);
+		System.out.println("robot sim id: " + simulator.getRobotId());
+		if(simulator.getStatus().equals("free")) {
+			return null;
+		}
+		return simulator.getLocation();
+	}
+	
+	/**
+	 * Initialized threads for each robots
+	 */
+	public static void initializeRobots() {
+		MySQLDBConnection connection = new MySQLDBConnection();
+		List<Robot> robotsList = connection.getAllRobots();
+		connection.close();
+		
+		for(Robot robot : robotsList) {
+			Timer timer = new Timer();
+			robots.put(robot.getRobotId(), new RobotSimulator(timer, robot));
+		}
+	}
+	
+	public static void initializeRobot(String robotId) {
+		MySQLDBConnection connection = new MySQLDBConnection();
+		Robot robot = connection.getRobot(robotId);
+		robots.put(robotId,  new RobotSimulator(new Timer(), robot));
+	}
 }
