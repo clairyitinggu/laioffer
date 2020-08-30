@@ -58,7 +58,6 @@ class HistoryTable extends Component {
             this.setState({
                 isLoadingList: true
             });
-
             axios.get(url, {
                 params: {
                     username : 1111

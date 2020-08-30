@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { robot, prone } from "../constants";
 import { setEstimateTime, setMoney } from "../actions";
+import axios from "axios";
 
 const FormFour = (props) => {
   const {
@@ -23,7 +24,39 @@ const FormFour = (props) => {
     secondDistance,
     estimateTime,
     money,
+    directions
   } = props;
+
+  const submitOrder = () => {
+    let route = null;
+    if (shippingMethod == 'Robot') {
+      console.log(shippingMethod);
+      console.log("Start: ", directions[0].lat(),':',directions[0].lng());
+      console.log("Dis: ", directions[directions.length - 1].lat(),':',directions[directions.length - 1].lng());
+      route = directions.map((direction) => {return{
+        lat: direction.lat(),
+        lng: direction.lng()
+      }});
+      console.log("route => ",route );
+    } else {
+      route = directions;
+      console.log("route => ",route );
+    }
+    axios.post('http://localhost:8080/laioffer/placingorder', {
+      username: '1111',
+      start: senderAddress,
+      destination: receiverAddress,
+      route: route,
+      method: shippingMethod
+    })
+        .then(function (response){
+          console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+
+  };
   useEffect(() => {
     if (shippingMethod === "Robot") {
       props.setEstimateTime(
@@ -94,7 +127,7 @@ const FormFour = (props) => {
           </Button>
         </Link>
         <Link to="/form/4">
-          <Button className="btn-right" type="primary" htmlType="submit">
+          <Button onClick={submitOrder} className="btn-right" type="primary" htmlType="submit">
             Submit
           </Button>
         </Link>
@@ -120,6 +153,7 @@ const mapStateToProps = (state) => {
     secondDistance: state.route.secondDistance,
     money: state.route.money,
     estimateTime: state.route.estimateTime,
+    directions : state.route.directions
   };
 };
 export default connect(mapStateToProps, { setEstimateTime, setMoney })(

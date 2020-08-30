@@ -17,7 +17,7 @@ import LearnMore from "./LearnMore";
 const Register = () => {
     return (
         <MDBView>
-            <MDBMask className="d-flex justify-content-center align-items-center gradient" />
+            <MDBMask className="justify-content-center align-items-center gradient" />
             <div>
                 <MDBContainer
                     style={{ height: "100%", width: "100%", paddingTop: "10rem" }}

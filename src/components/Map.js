@@ -70,6 +70,7 @@ const Map = withScriptjs(
           },
           (result, status) => {
             if (status === google.maps.DirectionsStatus.OK) {
+              console.log('Direction Result',result);
               props.setDistance(result.routes[0].legs[0].distance.value / 1000);
               props.setDirections(result.routes[0].overview_path);
             } else {
