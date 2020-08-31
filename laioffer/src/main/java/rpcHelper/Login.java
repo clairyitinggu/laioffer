@@ -2,6 +2,7 @@ package rpcHelper;
 
 import dao.UserDao;
 import entity.User;
+import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
 
 import javax.servlet.ServletException;
@@ -25,23 +26,26 @@ public class Login extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        JSONObject input = new JSONObject(IOUtils.toString(request.getReader()));
+        String username = input.getString("username");
+        String password = input.getString("password");
 
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
         UserDao userDao = new UserDao();
         JSONObject obj = new JSONObject();
 
             try {
-                User user = userDao.checkLogin(email, password);
+                boolean isLogin = userDao.checkLogin(username, password);
                 //String destPage = "login.jsp";
 
-                if (user != null) {
+                if (isLogin) {
                     HttpSession session = request.getSession();
-                    session.setAttribute("user", user);
+                    session.setAttribute("username", username);
+                    session.setMaxInactiveInterval(600);
+                    obj.put("status", "OK").put("username", username);
                     //destPage = "home.jsp";
                 } else {
-                    String message = "Invalid email/password";
-                    request.setAttribute("message", message);
+                    obj.put("status", "User Doesn't Exist");
+                    response.setStatus(401);
                 }
 
                 //RequestDispatcher dispatcher = request.getRequestDispatcher(destPage);

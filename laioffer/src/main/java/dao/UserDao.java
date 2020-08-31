@@ -7,11 +7,15 @@ import entity.User;
 import java.sql.SQLException;
 
 public class UserDao {
-    public User checkLogin(String email, String password) throws SQLException, ClassNotFoundException {
+    public boolean checkLogin(String username, String password) throws SQLException, ClassNotFoundException {
 
         MySQLDBConnection conn = new MySQLDBConnection();
 
-        return conn.checkLogin(email, password);
+        boolean res = conn.checkLogin(username, password);
+
+        conn.close();
+
+        return res;
 
     }
 

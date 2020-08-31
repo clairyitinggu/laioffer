@@ -228,36 +228,29 @@ public class MySQLDBConnection {
 
 	/**
      * Checking login
-     * @param email
+     * @param username
      * @param password
      * @return
      */
 
-	public User checkLogin(String email, String password) {
-		String jdbcURL = MySQLDBConstant.URL;
-		String dbUser = MySQLDBConstant.USERNAME;
-		String dbPassword = MySQLDBConstant.PASSWORD;
+	public boolean checkLogin(String username, String password) {
+		if (conn == null) {
+			System.err.print("DB Connection fail");
+			return false;
+		}
+		String sql = "SELECT * FROM user WHERE username = ? and password = ?";
 
-
-		String sql = "SELECT * FROM users WHERE email = ? and password = ?";
-		User user = null;
 		try {
 			PreparedStatement statement = conn.prepareStatement(sql);
-			statement.setString(1, email);
+			statement.setString(1, username);
 			statement.setString(2, password);
 			ResultSet result = statement.executeQuery();
+			return result.next();
 
-			if (result.next()) {
-				User.UserBuilder builder = new User.UserBuilder();
-				builder.setName(result.getString("name"));
-				builder.setEmail(email);
-				user = builder.build();
-			}
-			conn.close();
 		} catch(SQLException e) {
 			e.printStackTrace();
 		}
-		return user;
+		return false;
 
 	}
 }
