@@ -46,6 +46,7 @@ public class History extends HttpServlet {
 			JSONObject obj = order.toJSONObject();
 			Robot robot = connection.getRobot(order.getRobotId());
 			obj.put("method", robot.getType());
+			obj.put("dispatcher", robot.getDispatcher());
 			array.put(obj);
 		}
 		connection.close();

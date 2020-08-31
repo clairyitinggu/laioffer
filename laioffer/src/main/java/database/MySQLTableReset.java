@@ -81,35 +81,35 @@ public class MySQLTableReset {
 			statement.executeUpdate(sql);
 
 			// insert order
-			sql = "INSERT INTO package VALUES(" 
-					+ "'123456789', " 
-					+ "'1111', " 
-					+ "'151 W 34th St, New York, NY 10001', "
-					+ "'312 W 34th St, New York, NY 10001 ', " 
-					+ "'picking up', " 
-					+ "'1'" 
-					+ ")";
-			statement.executeUpdate(sql);
-
-			sql = "INSERT INTO package VALUES(" 
-					+ "'987654321', " 
-					+ "'1111', " 
-					+ "'151 W 34th St, New York, NY 10001', "
-					+ "'476 5th Ave, New York, NY 10018', " 
-					+ "'shipping', " 
-					+ "'2'" 
-					+ ")";
-			statement.executeUpdate(sql);
-
-			sql = "INSERT INTO package VALUES(" 
-					+ "'123459876', "
-					+ "'1111', " 
-					+ "'151 W 34th St, New York, NY 10001', "
-					+ "'234 W 42nd St, New York, NY 10036', " 
-					+ "'delivered', " 
-					+ "'3'" 
-					+ ")";
-			statement.executeUpdate(sql);
+//			sql = "INSERT INTO package VALUES(" 
+//					+ "'123456789', " 
+//					+ "'1111', " 
+//					+ "'151 W 34th St, New York, NY 10001', "
+//					+ "'312 W 34th St, New York, NY 10001 ', " 
+//					+ "'picking up', " 
+//					+ "'1'" 
+//					+ ")";
+//			statement.executeUpdate(sql);
+//
+//			sql = "INSERT INTO package VALUES(" 
+//					+ "'987654321', " 
+//					+ "'1111', " 
+//					+ "'151 W 34th St, New York, NY 10001', "
+//					+ "'476 5th Ave, New York, NY 10018', " 
+//					+ "'shipping', " 
+//					+ "'2'" 
+//					+ ")";
+//			statement.executeUpdate(sql);
+//
+//			sql = "INSERT INTO package VALUES(" 
+//					+ "'123459876', "
+//					+ "'1111', " 
+//					+ "'151 W 34th St, New York, NY 10001', "
+//					+ "'234 W 42nd St, New York, NY 10036', " 
+//					+ "'delivered', " 
+//					+ "'3'" 
+//					+ ")";
+//			statement.executeUpdate(sql);
 
 			// insert payment
 			sql = "INSERT INTO payment VALUES(" 
@@ -132,9 +132,16 @@ public class MySQLTableReset {
 
 			// insert robot
 			for(int i = 0; i < 9; i++) {
+				String dispatcher;
+				if(i/3 == 0) {
+					dispatcher = "'47 Lee Ave, San Francisco, CA'";
+				} else if (i/3 == 1) {
+					dispatcher = "'1250 Quintara St, San Francisco, CA'";
+				} else {
+					dispatcher = "'449 Powell St, San Francisco, CA'";
+				}
 				String robot = i % 3 == 0 ? "'drone'" : "'robot'";
 				String robotid = i % 3 == 0 ? "'drone" + i + "'": "'robot" + i + "'";
-				String dispatcher = "'dispatcher " + i / 3 + "'";
 				sql = "INSERT INTO robot VALUES(" 
 						+ robotid + ", " 
 						+ robot + ", "

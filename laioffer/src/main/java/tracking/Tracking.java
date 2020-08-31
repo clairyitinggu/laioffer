@@ -44,7 +44,10 @@ public class Tracking extends HttpServlet {
 		} else {
 			object = order.toJSONObject();
 			Robot robot = connection.getRobot(order.getRobotId());
-			object.put("method", robot.getType());
+			if(robot != null) {
+				object.put("method", robot.getType());
+				object.put("dispatcher", robot.getDispatcher());
+			}
 		}
 		connection.close();
 		RpcHelper.writeJsonObject(response, object);

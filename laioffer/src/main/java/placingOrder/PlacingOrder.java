@@ -55,6 +55,7 @@ public class PlacingOrder extends HttpServlet {
 			String start = input.getString("start");
 			String destination = input.getString("destination");
 			String method = input.getString("method");
+			String dispatcher = input.getString("dispatcher");
 			JSONArray route = input.getJSONArray("route");
 			List<Point> points = new ArrayList<>();
 			
@@ -65,12 +66,13 @@ public class PlacingOrder extends HttpServlet {
 			}
 			
 			CreateOrder creation = new CreateOrder();
-			Order order = creation.createOrder(username, start, destination, method, start, points);
+			Order order = creation.createOrder(username, start, destination, method, dispatcher, points);
 			object = order.toJSONObject();
 			
 			MySQLDBConnection connection = new MySQLDBConnection();
 			Robot robot = connection.getRobot(order.getRobotId());
 			object.put("method", robot.getType());
+			object.put("dispatcher", robot.getDispatcher());
 			connection.close();
 			
 		} catch (JSONException e) {
