@@ -266,7 +266,7 @@ public class MySQLDBConnection {
 			e.printStackTrace();
 		}
 		return false;
-
+	}
 
 	
 	/**
