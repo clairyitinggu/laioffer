@@ -17,7 +17,6 @@ import java.sql.SQLException;
 /**
  * Servlet implementation class Login
  */
-@WebServlet(name = "/login")
 public class Login extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
