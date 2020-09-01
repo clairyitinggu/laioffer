@@ -12,6 +12,7 @@ import entity.Order;
 import entity.Order.OrderBuilder;
 import entity.Robot;
 import entity.Robot.RobotBuilder;
+import entity.User;
 
 /**
  * This class is client access to mysql database
@@ -239,6 +240,34 @@ public class MySQLDBConnection {
 		}
 		return false;
 	}
+
+	/**
+     * Checking login
+     * @param username
+     * @param password
+     * @return
+     */
+
+	public boolean checkLogin(String username, String password) {
+		if (conn == null) {
+			System.err.print("DB Connection fail");
+			return false;
+		}
+		String sql = "SELECT * FROM user WHERE username = ? and password = ?";
+
+		try {
+			PreparedStatement statement = conn.prepareStatement(sql);
+			statement.setString(1, username);
+			statement.setString(2, password);
+			ResultSet result = statement.executeQuery();
+			return result.next();
+
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+
+
 	
 	/**
 	 * Get all robots from database
