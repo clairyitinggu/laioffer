@@ -10,25 +10,25 @@ import org.json.JSONObject;
 
 import database.MySQLDBConnection;
 import entity.Order;
-import entity.Robot;
+import robotManagement.Point;
+import robotManagement.RobotManagement;
 import rpcHelper.RpcHelper;
 
 /**
- * Servlet implementation class Tracking
+ * Servlet implementation class Location
  */
-public class Tracking extends HttpServlet {
+public class Location extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public Tracking() {
+    public Location() {
         super();
         // TODO Auto-generated constructor stub
     }
 
 	/**
-	 * handling request getting order of certain tracking number
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -38,15 +38,15 @@ public class Tracking extends HttpServlet {
 		MySQLDBConnection connection = new MySQLDBConnection();
 		Order order = connection.getTrackOrder(trackingNumber);
 		
-		JSONObject object;
-		if(order == null) {
-			object = new JSONObject();
-		} else {
-			object = order.toJSONObject();
-			Robot robot = connection.getRobot(order.getRobotId());
-			if(robot != null) {
-				object.put("method", robot.getType());
-				object.put("dispatcher", robot.getDispatcher());
+		JSONObject object = new JSONObject();;
+		if(order != null) {
+			System.out.println("robot id: " + order.getRobotId());
+			Point location = RobotManagement.getLocation(order.getRobotId());
+			if(location != null) {
+				object.put("lat", location.getLat());
+				object.put("lng", location.getLng());
+			} else {
+				object.put("status", "Current order is delivery");
 			}
 		}
 		connection.close();

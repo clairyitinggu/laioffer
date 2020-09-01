@@ -181,19 +181,34 @@ public class MySQLDBConnection {
 	 * set the robot to handle an order
 	 * @return
 	 */
-	public void setRobot(Robot robot) {
+	public void setRobot(String trackingNumber, String robotId, String free) {
 		if(conn == null) {
 			System.err.println("DB connection failed");
 			return;
 		}
 		
-		String sql = "INSERT IGNORE INTO robot VALUES (?,?,?,?)";
+		String sql = "UPDATE robot SET tracking_number = ?, status = ? WHERE robot_id = ?";
 		try {
 			PreparedStatement statement = conn.prepareStatement(sql);
-			statement.setString(1, robot.getRobotId());
-			statement.setString(2, robot.getType());
-			statement.setString(3, robot.getTrackingNumber());
-			statement.setString(4, robot.getStatus());
+			statement.setString(1, trackingNumber);
+			statement.setString(2, free);
+			statement.setString(3, robotId);
+			statement.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void deliveredOrder(String trackingNumber) {
+		if(conn == null) {
+			System.err.println("DB connection failed");
+			return;
+		}	
+		String sql = "UPDATE package SET status = ? WHERE tracking_number = ?";
+		try {
+			PreparedStatement statement = conn.prepareStatement(sql);
+			statement.setString(1, "delivered");
+			statement.setString(2, trackingNumber);
 			statement.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -252,5 +267,72 @@ public class MySQLDBConnection {
 		}
 		return false;
 
+
+	
+	/**
+	 * Get all robots from database
+	 * @return the list of robots
+	 */
+	public List<Robot> getAllRobots() {
+		List<Robot> robots = new ArrayList<>();
+		if(conn == null) {
+			System.err.println("DB connection failed");
+			return robots;
+		}
+		
+		String sql = "SELECT * FROM robot";
+		try {
+			PreparedStatement statement = conn.prepareStatement(sql);
+			ResultSet rs = statement.executeQuery();
+			RobotBuilder builder = new RobotBuilder();
+			while(rs.next()) {
+				Robot robot = builder.setRobotId(rs.getString("robot_id"))
+									.setType(rs.getString("type"))
+									.setTrackingNumber(rs.getString("tracking_number"))
+									.setStatus(rs.getString("status"))
+									.setDispatcher(rs.getString("dispatcher"))
+									.build();
+				robots.add(robot);
+			}
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return robots;
+	}
+	
+	/**
+	 * Getting the free robot
+	 * @param dispatcher - the dispatcher where selected robot belong to
+	 * @return free robot with such dispatcher
+	 */
+	public Robot getFreeRobot(String dispatcher, String method) {
+		Robot robot = null;
+		if(conn == null) {
+			System.err.println("DB connection failed");
+			return robot;
+		}
+		
+		String sql = "SELECT * FROM robot WHERE dispatcher = ? AND type = ? AND status = 'free'";
+		try {
+			PreparedStatement statement = conn.prepareStatement(sql);
+			statement.setString(1, dispatcher);
+			statement.setString(2, method);
+			ResultSet rs = statement.executeQuery();
+			
+			
+			RobotBuilder builder = new RobotBuilder();
+			if(rs.next()) {
+				robot = builder.setRobotId(rs.getString("robot_id"))
+								.setType(rs.getString("type"))
+								.setStatus(rs.getString("status"))
+								.setTrackingNumber(rs.getString("tracking_number"))
+								.setDispatcher(rs.getString("dispatcher"))
+								.build();
+				return robot;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}		
+		return robot;
 	}
 }
