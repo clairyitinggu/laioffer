@@ -5,12 +5,17 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import entity.Robot;
 
 public class RobotSimulator extends TimerTask implements Runnable{
 	private List<Point> route;
 	private int index;
 	private Timer timer;
+	private double lat;
+	private double lng;
 	
 	private String robotId;
 	private String type;
@@ -21,6 +26,8 @@ public class RobotSimulator extends TimerTask implements Runnable{
 	public RobotSimulator(Timer timer, Robot robot) {
 		index = 0;
 		route = new ArrayList<>();
+		lat = 0;
+		lng = 0;
 		this.timer = timer;
 		this.robotId = robot.getRobotId();
 		this.type = robot.getType();
@@ -33,29 +40,94 @@ public class RobotSimulator extends TimerTask implements Runnable{
 		return status;
 	}
 	
-	public Point getLocation() {
-		return route.get(index);
+	public JSONObject getLocation() {
+		JSONObject object = new JSONObject();
+		object.put("lat", this.lat);
+		object.put("lng", this.lng);
+		return object;
+	}
+	
+	public JSONArray getRoute() {
+		JSONArray array = new JSONArray();
+		
+		for(int i = index; i < route.size(); i++) {
+			JSONObject object = new JSONObject();
+			object.put("lat", route.get(i).getLat());
+			object.put("lng", route.get(i).getLng());
+			array.put(object);
+		}
+		return array;
 	}
 	
 	public String getRobotId() {
 		return robotId;
 	}
 	
+	public String getTrackingNumber() {
+		return trackingNumber;
+	}
+	
 	public void start(String trackingNumber, List<Point> route) {
 		setRoute(route);
 		setStatus("busy");
 		setTrackingNumber(trackingNumber);
-		timer.schedule(this, 0, 5000);
+		lat = route.get(0).getLat();
+		lng = route.get(0).getLng();
+		timer.schedule(this, 0, 500);
 	}
 	
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-		System.out.println(robotId + " move to Lat: " + route.get(index).getLat() + " Lng: " + route.get(index).getLng());
-		index++;
-		if(index == route.size()) {
+		System.out.println(robotId + " move to Lat: " + lat + " Lng: " + lng);
+
+		if(this.type.equals("robot")) {
+			runRobot();
+		} else {
+			runDrone();
+		}
+		if(index == route.size() - 1) {
 			reset();
 		}
+	}
+	
+	private void runRobot() {
+		lat += (route.get(index+1).getLat() - route.get(index).getLat()) / 3;
+		lng += (route.get(index+1).getLng() - route.get(index).getLng()) / 3;
+		if(nextPoint()) {
+			index++;
+			if(index < route.size()) {
+				lat = route.get(index).getLat();
+				lng = route.get(index).getLng();
+			}
+		}
+	}
+	
+	private void runDrone() {
+		lat += (route.get(index+1).getLat() - route.get(index).getLat()) / 100;
+		lng += (route.get(index+1).getLng() - route.get(index).getLng()) / 100;
+		if(nextPoint()) {
+			index++;
+		}
+	}
+	
+	private boolean nextPoint() {
+		boolean passLat = false;
+		boolean passLng = false;
+		
+		if(route.get(index+1).getLat() <= route.get(index).getLat() && lat <= route.get(index+1).getLat()) {
+			passLat = true;
+		} else if (route.get(index+1).getLat() >= route.get(index).getLat() && lat >= route.get(index+1).getLat()) {
+			passLat = true;
+		}
+		
+		if(route.get(index+1).getLng() <= route.get(index).getLng() && lng <= route.get(index+1).getLng()) {
+			passLng = true;
+		} else if (route.get(index+1).getLng() >= route.get(index).getLng() && lng >= route.get(index+1).getLng()) {
+			passLng = true;
+		}
+		
+		return passLat && passLng;
 	}
 	
 	private void reset() {
