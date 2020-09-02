@@ -31,3 +31,5 @@ export const prone = {
   dollarPerKM: 4,
   KMPerHour: 50,
 }
+
+export const HISTORY = 'http://3.129.204.140/laioffer/history';

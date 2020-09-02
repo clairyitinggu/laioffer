@@ -123,6 +123,9 @@ export const setMarkersConfig = () => {
 }
 
 export const setDirections = directions => {
+  // console.log("Set Route: ", directions);
+  // console.log("Start: ", directions[0].lat(),':',directions[0].lng());
+  // console.log("Dis: ", directions[directions.length - 1].lat(),':',directions[directions.length - 1].lng());
   return {
     type: "SET_DIRECTIONS",
     payload: directions,

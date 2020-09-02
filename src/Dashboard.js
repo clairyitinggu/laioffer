@@ -70,7 +70,7 @@ class Dashboard extends React.Component {
 
         return (
             <MDBView>
-                <MDBMask className="d-flex justify-content-center align-items-center gradient" />
+                <MDBMask className="justify-content-center align-items-center gradient" />
                 <div>
                     <MDBContainer
                         style={{ height: "100%", width: "100%", paddingTop: "10rem" }}
@@ -82,9 +82,9 @@ class Dashboard extends React.Component {
                                 <Link to="/form/1">
                                     <MDBBtn rounded outline className="btn-block" color="info" size="lg" style={{marginRight: "200px", marginBottom:"80px"}}>Submit a New Order</MDBBtn>
                                 </Link>
-
-                                <MDBBtn rounded outline className="btn-block" color="info" size="lg" style={{marginRight: "200px"}}>Order History</MDBBtn>
-
+                                <Link to="/tracking">
+                                    <MDBBtn rounded outline className="btn-block" color="info" size="lg" style={{marginRight: "200px"}}>Order History</MDBBtn>
+                                </Link>
                             </MDBAnimation>
                         </div>
                     </MDBContainer>
