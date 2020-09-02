@@ -3,9 +3,14 @@ import "./form.css";
 import { Descriptions, Button } from "antd";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import { robot, prone } from "../constants";
-import { setEstimateTime, setMoney } from "../actions";
 import axios from "axios";
+
+const parseTime = (time) => {
+  const totalMin = time * 60;
+  const hour = Math.floor(totalMin / 60);
+  const min = Math.floor(totalMin % 60);
+  return `${hour} hours ${min} minutes`;
+}
 
 const FormFour = (props) => {
   const {
@@ -20,60 +25,48 @@ const FormFour = (props) => {
     receiverAddress,
     receiverZip,
     shippingMethod,
-    distance,
-    secondDistance,
     estimateTime,
     money,
-    directions
+    directions,
   } = props;
 
   const submitOrder = () => {
     let route = null;
-    if (shippingMethod == 'Robot') {
+    if (shippingMethod == "Robot") {
       console.log(shippingMethod);
-      console.log("Start: ", directions[0].lat(),':',directions[0].lng());
-      console.log("Dis: ", directions[directions.length - 1].lat(),':',directions[directions.length - 1].lng());
-      route = directions.map((direction) => {return{
-        lat: direction.lat(),
-        lng: direction.lng()
-      }});
-      console.log("route => ",route );
+      console.log("Start: ", directions[0].lat(), ":", directions[0].lng());
+      console.log(
+        "Dis: ",
+        directions[directions.length - 1].lat(),
+        ":",
+        directions[directions.length - 1].lng()
+      );
+      route = directions.map((direction) => {
+        return {
+          lat: direction.lat(),
+          lng: direction.lng(),
+        };
+      });
+      console.log("route => ", route);
     } else {
       route = directions;
-      console.log("route => ",route );
+      console.log("route => ", route);
     }
-    axios.post('http://localhost:8080/laioffer/placingorder', {
-      username: '1111',
-      start: senderAddress,
-      destination: receiverAddress,
-      route: route,
-      method: shippingMethod
-    })
-        .then(function (response){
-          console.log(response);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-
+    axios
+      .post("http://localhost:8080/laioffer/placingorder", {
+        username: "1111",
+        start: senderAddress,
+        destination: receiverAddress,
+        route: route,
+        method: shippingMethod,
+      })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
-  useEffect(() => {
-    if (shippingMethod === "Robot") {
-      props.setEstimateTime(
-        distance / robot.KMPerHour + secondDistance / robot.KMPerHour
-      );
-      props.setMoney(
-        distance * robot.dollarPerKM + secondDistance * robot.dollarPerKM
-      );
-    } else {
-      props.setEstimateTime(
-        distance / prone.KMPerHour + secondDistance / prone.KMPerHour
-      );
-      props.setMoney(
-        distance * prone.dollarPerKM + secondDistance * prone.dollarPerKM
-      );
-    }
-  }, []);
 
   const data = (() => {
     if (!render) {
@@ -85,8 +78,8 @@ const FormFour = (props) => {
         Receiver_Phone: receiverPhone,
         Receiver_Address: `${receiverAddress}, San Francisco, CA, ${receiverZip}`,
         Shipping_Method: shippingMethod,
-        Estimate_Time: `${estimateTime} hr`,
-        money: `$${money}`,
+        Estimate_Time: parseTime(estimateTime),
+        price: `$${Number.parseFloat(money).toFixed(2)}`,
       };
     }
     return {
@@ -98,8 +91,8 @@ const FormFour = (props) => {
       Receiver_Phone: receiverPhone,
       Receiver_Address: `${receiverAddress}, San Francisco, CA, ${receiverZip}`,
       Shipping_Method: shippingMethod,
-      Estimate_Time: `${estimateTime} hr`,
-      money: `${money}`,
+      Estimate_Time: parseTime(estimateTime),
+      price: `$${Number.parseFloat(money).toFixed(2)}`,
     };
   })();
 
@@ -117,7 +110,7 @@ const FormFour = (props) => {
 
   return (
     <div className="form-container ">
-      <Descriptions title="User Info">{renderAll}</Descriptions>
+      <Descriptions className="description-container" title="User Info">{renderAll}</Descriptions>
       <br />
       <br />
       <div className="btn-group">
@@ -127,7 +120,12 @@ const FormFour = (props) => {
           </Button>
         </Link>
         <Link to="/form/4">
-          <Button onClick={submitOrder} className="btn-right" type="primary" htmlType="submit">
+          <Button
+            onClick={submitOrder}
+            className="btn-right"
+            type="primary"
+            htmlType="submit"
+          >
             Submit
           </Button>
         </Link>
@@ -149,13 +147,9 @@ const mapStateToProps = (state) => {
     receiverAddress: state.order.receiverAddress,
     receiverZip: state.order.receiverZip,
     shippingMethod: state.order.shippingMethod,
-    distance: state.route.distance,
-    secondDistance: state.route.secondDistance,
     money: state.route.money,
     estimateTime: state.route.estimateTime,
-    directions : state.route.directions
+    directions: state.route.directions,
   };
 };
-export default connect(mapStateToProps, { setEstimateTime, setMoney })(
-  FormFour
-);
+export default connect(mapStateToProps)(FormFour);
