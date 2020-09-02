@@ -58,7 +58,7 @@ public class PlacingOrder extends HttpServlet {
 		JSONObject object = new JSONObject();
 		
 		try {
-			String username = input.getString("username");
+			String username = (String)session.getAttribute("username");
 			String start = input.getString("start");
 			String destination = input.getString("destination");
 			String method = input.getString("method");

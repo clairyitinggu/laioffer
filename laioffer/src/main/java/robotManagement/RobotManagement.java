@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import robotManagement.Point;
 import database.MySQLDBConnection;
 import entity.Robot;
@@ -64,13 +67,26 @@ public class RobotManagement {
 	 * @param robotId - id of robot
 	 * @return location point of the robot
 	 */
-	public static Point getLocation(String robotId) {
+	public static JSONObject getLocation(String robotId, String trackingNumber) {
 		RobotSimulator simulator = robots.get(robotId);
-		System.out.println("robot sim id: " + simulator.getRobotId());
-		if(simulator.getStatus().equals("free")) {
+		if(simulator.getTrackingNumber() == null || !simulator.getTrackingNumber().equals(trackingNumber)) {
 			return null;
 		}
 		return simulator.getLocation();
+	}
+	
+	/**
+	 * Getting the rest points of route of a robot
+	 * @param robotId
+	 * @param trackingNumber
+	 * @return
+	 */
+	public static JSONArray getRoute(String robotId, String trackingNumber) {
+		RobotSimulator simulator = robots.get(robotId);
+		if(simulator.getTrackingNumber() == null || !simulator.getTrackingNumber().equals(trackingNumber)) {
+			return null;
+		}
+		return simulator.getRoute();
 	}
 	
 	/**

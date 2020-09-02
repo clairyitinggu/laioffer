@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import database.MySQLDBConnection;
@@ -41,20 +42,28 @@ public class Location extends HttpServlet {
 		}
 		
 		String trackingNumber = request.getParameter("tracking_number");
-
+		String path = request.getParameter("path");
+		
 		MySQLDBConnection connection = new MySQLDBConnection();
 		Order order = connection.getTrackOrder(trackingNumber);
 		
-		JSONObject object = new JSONObject();;
+		JSONObject object = new JSONObject();
 		if(order != null) {
 			System.out.println("robot id: " + order.getRobotId());
-			Point location = RobotManagement.getLocation(order.getRobotId());
+			JSONObject location = RobotManagement.getLocation(order.getRobotId(), order.getTrackingNumber());	
 			if(location != null) {
-				object.put("lat", location.getLat());
-				object.put("lng", location.getLng());
+				object.put("location", location);
 			} else {
 				object.put("status", "Current order is delivery");
 			}
+			
+			if(path.equals("true")) {
+				JSONArray route = RobotManagement.getRoute(order.getRobotId(), order.getTrackingNumber());
+				System.out.println("route: " + route);
+				if(route != null) {
+					object.put("route", route);
+				}
+			}			
 		}
 		connection.close();
 		RpcHelper.writeJsonObject(response, object);
