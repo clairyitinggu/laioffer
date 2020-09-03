@@ -1,0 +1,67 @@
+@import "~antd/dist/antd.css";
+
+.btn-group {
+  display: flex;
+  justify-content: space-between;
+}
+
+.btn-right {
+  float: right;
+}
+
+.map-container {
+  margin: 40px;
+  width: 50%;
+}
+
+.success-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  align-items: center;
+  text-align: center;
+}
+
+.description-container {
+  border: 1px #ccc solid;
+  border-radius: 1px;
+  background-color: #fff;
+}
+
+.route-container {
+  display: flex;
+  justify-content: space-between;
+  padding: 0;
+  width: 100%;
+  height :900px;
+}
+
+.form-container {
+  padding: 40px;
+  margin: 40px;
+  width: 50vw;
+  border: 1px #ccc solid;
+  border-radius: 2px;
+}
+
+.site-input-group-wrapper .site-input-split {
+  background-color: #fff;
+}
+
+.site-input-group-wrapper .site-input-right {
+  border-left-width: 0;
+}
+
+.site-input-group-wrapper .site-input-right:hover,
+.site-input-group-wrapper .site-input-right:focus {
+  border-left-width: 1px;
+}
+
+.site-input-group-wrapper .ant-input-rtl.site-input-right {
+  border-right-width: 0;
+}
+
+.site-input-group-wrapper .ant-input-rtl.site-input-right:hover,
+.site-input-group-wrapper .ant-input-rtl.site-input-right:focus {
+  border-right-width: 1px;
+}
