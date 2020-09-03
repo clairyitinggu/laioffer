@@ -48,15 +48,11 @@ public class RobotSimulator extends TimerTask implements Runnable{
 	}
 	
 	public JSONArray getRoute() {
-		JSONArray array = new JSONArray();
-		
-		for(int i = index; i < route.size(); i++) {
-			JSONObject object = new JSONObject();
-			object.put("lat", route.get(i).getLat());
-			object.put("lng", route.get(i).getLng());
-			array.put(object);
+		if(type.equals("robot")) {
+			return robotRoute();
+		} else {
+			return droneRoute();
 		}
-		return array;
 	}
 	
 	public String getRobotId() {
@@ -148,5 +144,33 @@ public class RobotSimulator extends TimerTask implements Runnable{
 	
 	private void setTrackingNumber(String trackingNumber) {
 		this.trackingNumber = trackingNumber;
+	}
+	
+	private JSONArray robotRoute() {
+		JSONArray array = new JSONArray();
+		
+		for(int i = index; i < route.size(); i++) {
+			JSONObject object = new JSONObject();
+			object.put("lat", route.get(i).getLat());
+			object.put("lng", route.get(i).getLng());
+			array.put(object);
+		}
+		return array;
+	}
+	
+	private JSONArray droneRoute() {
+		JSONArray array = new JSONArray();
+		
+		JSONObject object = new JSONObject();
+		object.put("lat", lat);
+		object.put("lng", lng);
+		array.put(object);
+		
+		JSONObject obj = new JSONObject();
+		obj.put("lat", route.get(1).getLat());
+		obj.put("lng", route.get(1).getLng());
+		array.put(obj);
+		
+		return array;
 	}
 }
