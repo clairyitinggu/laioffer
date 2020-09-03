@@ -39,7 +39,7 @@ class Login extends Component {
             method: 'POST',
             mode:'no-cors',
             body: JSON.stringify({
-                name: this.state.name,
+                username: this.state.username,
                 password: this.state.password
             })
         })
@@ -73,8 +73,8 @@ class Login extends Component {
                                             validate
                                             error="wrong"
                                             success="right"
-                                            name="name"
-                                            value={this.state.name}
+                                            name="username"
+                                            value={this.state.username}
                                             onInput={this.handleInput}
                                             className="white-text "
                                             iconClass="white-text"

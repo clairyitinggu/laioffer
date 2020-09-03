@@ -7,7 +7,7 @@ class Register extends Component {
     constructor(){
         super ();
         this.state = {
-            name:"",
+            username:"",
             email:"",
             password:""
         };
@@ -25,7 +25,7 @@ class Register extends Component {
         fetch('http://3.129.204.140/laioffer/register', {
             method: 'POST',
             body: JSON.stringify({
-                name: this.state.name,
+                username: this.state.username,
                 email: this.state.email,
                 password: this.state.password
             })
@@ -62,8 +62,8 @@ render(){
                                         validate
                                         error="wrong"
                                         success="right"
-                                        name="name"
-                                        value={this.state.name}
+                                        name="username"
+                                        value={this.state.username}
                                         onInput={this.handleInput}
                                         className="white-text "
                                         iconClass="white-text"
