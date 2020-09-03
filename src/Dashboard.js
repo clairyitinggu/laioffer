@@ -1,34 +1,15 @@
 import React from "react";
 import {
-    MDBNavbar,
-    MDBNavbarBrand,
-    MDBNavbarNav,
-    MDBNavItem,
-    MDBNavLink,
-    MDBNavbarToggler,
-    MDBCollapse,
     MDBMask,
-    MDBRow,
-    MDBCol,
-    MDBIcon,
     MDBBtn,
     MDBView,
     MDBContainer,
-    MDBCard,
-    MDBCardBody,
-    MDBInput,
-    MDBFormInline,
     MDBAnimation,
 } from "mdbreact";
 import {
-    Route,
-    Link,
-    Switch, Redirect
+    Link
 } from 'react-router-dom';
-import TopBar from "./TopBar";
 import LearnMore from "./LearnMore";
-import Form from "./components/Form"
-
 
 class Dashboard extends React.Component {
     state = {
