@@ -1,5 +1,3 @@
-import faker from "../apis/faker";
-
 // Page 1
 export const setSenderName = (name) => {
   return {
@@ -80,18 +78,18 @@ export const setShippingMethod = (method) => {
   };
 };
 
-export const setEstimateTime = estimateTime => {
+export const setEstimateTime = (estimateTime) => {
   return {
     type: "SET_ESTIMATE_TIME",
-    payload: estimateTime
-  }
+    payload: estimateTime,
+  };
 };
 
-export const setMoney = money => {
+export const setMoney = (money) => {
   return {
     type: "SET_MONEY",
     payload: money,
-  }
+  };
 };
 
 // Map
@@ -119,36 +117,43 @@ export const setReceiverMarker = (position) => {
 export const setMarkersConfig = () => {
   return {
     type: "SET_MARKERS_CONFIG",
-  }
-}
+  };
+};
 
-export const setDirections = directions => {
+export const setDirections = (directions) => {
   // console.log("Set Route: ", directions);
   // console.log("Start: ", directions[0].lat(),':',directions[0].lng());
   // console.log("Dis: ", directions[directions.length - 1].lat(),':',directions[directions.length - 1].lng());
   return {
     type: "SET_DIRECTIONS",
     payload: directions,
-  }
-}
+  };
+};
 
-export const setSecondDirections = directions => {
+export const setSecondDirections = (directions) => {
   return {
     type: "SET_SECOND_DIRECTIONS",
     payload: directions,
-  }
-}
+  };
+};
 
-export const setDistance = distance => {
+export const setDistance = (distance) => {
   return {
     type: "SET_DISTANCE",
     payload: distance,
-  }
-}
+  };
+};
 
-export const setSecondDistance = distance => {
+export const setSecondDistance = (distance) => {
   return {
     type: "SET_SECOND_DISTANCE",
     payload: distance,
-  }
-}
+  };
+};
+
+export const setOrderID = (id) => {
+  return {
+    type: "SET_ORDER_ID",
+    payload: id,
+  };
+};

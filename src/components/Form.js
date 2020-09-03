@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Route } from "react-router-dom";
+import { Router, Route } from "react-router-dom";
 import { Provider } from "react-redux";
 import { createStore, applyMiddleware } from "redux";
 import "./form.css";
@@ -10,6 +10,11 @@ import FormThree from "./FormThree";
 import FormFour from "./FormFour";
 import reducers from "../reducers";
 import thunk from "redux-thunk";
+import orderSuccess from "./orderSuccess";
+import orderFailure from "./orderFailure";
+import history from "../history";
+import Tracking from "./Tracking";
+import Dashboard from "../Dashboard";
 
 export default () => {
   const store = createStore(reducers, applyMiddleware(thunk));
@@ -29,15 +34,19 @@ export default () => {
   return (
     <Provider store={store}>
       <div className="outer-container">
-        <BrowserRouter>
-          <div className="route-container" >
+        <Router history={history}>
+          <div className="route-container">
             <Route path="/form/1" exact component={FormOne} />
             <Route path="/form/2" exact component={FormTwo} />
             <Route path="/form/3" exact component={FormThree} />
             <Route path="/form/4" exact component={FormFour} />
             <Route path="/form" component={MapComponent} />
+            <Route path="/success" exact component={orderSuccess} />
+            <Route path="/failure" exact component={orderFailure} />
+            <Route path="/dashboard" exact component={Dashboard} />
+            <Route path="/tracking" exact component={Tracking}/>
           </div>
-        </BrowserRouter>
+        </Router>
       </div>
     </Provider>
   );

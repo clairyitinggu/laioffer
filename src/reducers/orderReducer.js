@@ -1,6 +1,6 @@
 export default (state = {
   senderName: '', dispatcher: null, senderPhone: '', render: false, senderAddress: '', senderZip: '', 
-  receiverName: '', receiverPhone: '', receiverAddress: '', receiverZip: '', shippingMethod: null,
+  receiverName: '', receiverPhone: '', receiverAddress: '', receiverZip: '', shippingMethod: null, orderID: '',
 }, action) => {
   switch (action.type) {
     case 'SET_SENDER_NAME':
@@ -27,6 +27,9 @@ export default (state = {
 
     case 'SET_SHIPPING_METHOD':
       return { ...state, shippingMethod: action.payload }
+
+    case 'SET_ORDER_ID':
+      return { ...state, orderID: action.payload }
 
     default:
       return state;

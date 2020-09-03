@@ -17,7 +17,7 @@ import {
   setMarkersConfig,
 } from "../actions";
 
-Geocode.setApiKey("YOUR_KEY_HERE");
+Geocode.setApiKey("PUT_YOUR_KEY");
 const FormOne = (props) => {
   const { Option } = Select;
   const { name, phone, dispatcher, render, address, zip, senderMarker } = props;

@@ -1,16 +1,18 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import "./form.css";
-import { Descriptions, Button } from "antd";
+import { Descriptions, Button, Modal } from "antd";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { setOrderID } from "../actions";
+import history from "../history";
 
 const parseTime = (time) => {
   const totalMin = time * 60;
   const hour = Math.floor(totalMin / 60);
   const min = Math.floor(totalMin % 60);
   return `${hour} hours ${min} minutes`;
-}
+};
 
 const FormFour = (props) => {
   const {
@@ -61,10 +63,13 @@ const FormFour = (props) => {
         method: shippingMethod,
       })
       .then(function (response) {
-        console.log(response);
+        const obj = JSON.parse(response);
+        props.setOrderID(obj.tracking_number);
+        history.push('/success');
       })
       .catch(function (error) {
         console.log(error);
+        history.push('/failure');
       });
   };
 
@@ -96,6 +101,22 @@ const FormFour = (props) => {
     };
   })();
 
+  const [visible, setVisible] = useState(false);
+
+  const showModal = () => {
+    setVisible(true);
+  };
+
+  const handleOk = (e) => {
+    submitOrder();
+    setVisible(false);
+  };
+
+  const handleCancel = (e) => {
+    console.log(e);
+    setVisible(false);
+  };
+
   const renderAll = (() => {
     const arr = [];
     for (const [key, value] of Object.entries(data)) {
@@ -110,7 +131,9 @@ const FormFour = (props) => {
 
   return (
     <div className="form-container ">
-      <Descriptions className="description-container" title="User Info">{renderAll}</Descriptions>
+      <Descriptions className="description-container" title="User Info">
+        {renderAll}
+      </Descriptions>
       <br />
       <br />
       <div className="btn-group">
@@ -119,16 +142,17 @@ const FormFour = (props) => {
             Previous
           </Button>
         </Link>
-        <Link to="/form/4">
-          <Button
-            onClick={submitOrder}
-            className="btn-right"
-            type="primary"
-            htmlType="submit"
-          >
-            Submit
-          </Button>
-        </Link>
+        <Button type="primary" onClick={showModal}>
+          Submit
+        </Button>
+        <Modal
+          title="Basic Modal"
+          visible={visible}
+          onOk={handleOk}
+          onCancel={handleCancel}
+        >
+          <p>Are you sure you want to submit this form?</p>
+        </Modal>
       </div>
     </div>
   );
@@ -152,4 +176,4 @@ const mapStateToProps = (state) => {
     directions: state.route.directions,
   };
 };
-export default connect(mapStateToProps)(FormFour);
+export default connect(mapStateToProps, { setOrderID })(FormFour);
