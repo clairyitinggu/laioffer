@@ -7,27 +7,9 @@ import {
     MDBNavLink,
     MDBNavbarToggler,
     MDBCollapse,
-    MDBMask,
-    MDBRow,
-    MDBCol,
-    MDBIcon,
-    MDBBtn,
-    MDBView,
     MDBContainer,
-    MDBCard,
-    MDBCardBody,
-    MDBInput,
-    MDBFormInline,
-    MDBAnimation,
+    MDBFormInline
 } from "mdbreact";
-import {
-    Route,
-    Link,
-    Switch, Redirect
-} from 'react-router-dom';
-// import Routes from "./Routes";
-
-// import "./ClassicFormPage.css";
 
 class TopBar extends React.Component {
     state = {

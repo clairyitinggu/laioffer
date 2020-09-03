@@ -28,7 +28,7 @@ const Register = () => {
                         <MDBAnimation type="fadeInRight" delay=".3s" className="card-on-right-register">
                             <MDBCard id="classic-card">
                                 <MDBCardBody className="white-text">
-                                    <h3 className="text-center">
+                                    <h3 className="text-center white-text">
                                         <MDBIcon icon="user" /> Register:
                                     </h3>
                                     <hr className="hr-light" />

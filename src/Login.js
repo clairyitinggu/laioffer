@@ -29,7 +29,7 @@ const Login = () => {
                         <MDBAnimation type="fadeInRight" delay=".3s" className="card-on-right-register">
                             <MDBCard id="classic-card">
                                 <MDBCardBody className="white-text">
-                                    <h3 className="text-center">
+                                    <h3 className="text-center white-text">
                                         <MDBIcon icon="user" /> Log In:
                                     </h3>
                                     <hr className="hr-light" />
