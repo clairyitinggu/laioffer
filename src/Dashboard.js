@@ -1,44 +1,21 @@
 import React from "react";
 import {
-    MDBNavbar,
-    MDBNavbarBrand,
-    MDBNavbarNav,
-    MDBNavItem,
-    MDBNavLink,
-    MDBNavbarToggler,
-    MDBCollapse,
     MDBMask,
-    MDBRow,
-    MDBCol,
-    MDBIcon,
     MDBBtn,
     MDBView,
     MDBContainer,
-    MDBCard,
-    MDBCardBody,
-    MDBInput,
-    MDBFormInline,
     MDBAnimation,
 } from "mdbreact";
 import {
-    Route,
-    Link,
-    Switch, Redirect
+    Link
 } from 'react-router-dom';
-import TopBar from "./TopBar";
 import LearnMore from "./LearnMore";
-import Form from "./components/Form"
-
 
 class Dashboard extends React.Component {
     state = {
         collapseID: "",
         isLoggedIn: false
     };
-    handleLoginSucceed = () => {
-        // localStorage.setItem(TOKEN_KEY, token)
-        this.setState({ isLoggedIn: true });
-    }
 
     toggleCollapse = (collapseID) => () =>
         this.setState((prevState) => ({
@@ -70,7 +47,7 @@ class Dashboard extends React.Component {
 
         return (
             <MDBView>
-                <MDBMask className="d-flex justify-content-center align-items-center gradient" />
+                <MDBMask className="justify-content-center align-items-center gradient" />
                 <div>
                     <MDBContainer
                         style={{ height: "100%", width: "100%", paddingTop: "10rem" }}
@@ -79,20 +56,17 @@ class Dashboard extends React.Component {
                         <LearnMore />
                         <div>
                             <MDBAnimation type="fadeInRight" delay=".3s">
-                                <Link to="/form/1">
+                                <a href="/form/1">
                                     <MDBBtn rounded outline className="btn-block" color="info" size="lg" style={{marginRight: "200px", marginBottom:"80px"}}>Submit a New Order</MDBBtn>
-                                </Link>
-
-                                <MDBBtn rounded outline className="btn-block" color="info" size="lg" style={{marginRight: "200px"}}>Order History</MDBBtn>
-
+                                </a>
+                                <a href="/tracking">
+                                    <MDBBtn rounded outline className="btn-block" color="info" size="lg" style={{marginRight: "200px"}}>Order History</MDBBtn>
+                                </a>
                             </MDBAnimation>
                         </div>
                     </MDBContainer>
                 </div>
             </MDBView>
-
-
-
 
         );
     }

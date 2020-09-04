@@ -7,47 +7,21 @@ import {
     MDBNavLink,
     MDBNavbarToggler,
     MDBCollapse,
-    MDBMask,
-    MDBRow,
-    MDBCol,
-    MDBIcon,
-    MDBBtn,
-    MDBView,
     MDBContainer,
-    MDBCard,
-    MDBCardBody,
-    MDBInput,
-    MDBFormInline,
-    MDBAnimation,
+    MDBFormInline
 } from "mdbreact";
-import {
-    Route,
-    Link,
-    Switch, Redirect
-} from 'react-router-dom';
-// import Routes from "./Routes";
-
-// import "./ClassicFormPage.css";
+import { LogoutOutlined } from '@ant-design/icons';
 
 class TopBar extends React.Component {
     state = {
         collapseID: "",
         isLoggedIn: false
     };
-    handleLoginSucceed = () => {
-        // localStorage.setItem(TOKEN_KEY, token)
-        this.setState({ isLoggedIn: true });
-    }
 
     toggleCollapse = (collapseID) => () =>
         this.setState((prevState) => ({
             collapseID: prevState.collapseID !== collapseID ? collapseID : "",
         }));
-    closeCollapse = (collID) => () => {
-        const { collapseID } = this.state;
-        window.scrollTo(0, 0);
-        collapseID === collID && this.setState({ collapseID: "" });
-    };
 
     componentDidMount() {
         document.querySelector("nav").style.height = "65px";
@@ -96,22 +70,13 @@ class TopBar extends React.Component {
                                         <MDBNavLink to="/dashboard">User Dashboard</MDBNavLink>
                                     </MDBNavItem>
 
-                                    <MDBNavItem>
-                                        <MDBNavLink to="#!"></MDBNavLink>
-                                    </MDBNavItem>
                                 </MDBNavbarNav>
                                 <MDBNavbarNav right>
                                     <MDBNavItem>
-                                        <MDBFormInline waves>
-                                            <div className="md-form my-0">
-                                                <input
-                                                    className="form-control mr-sm-2"
-                                                    type="text"
-                                                    placeholder="Check tracking"
-                                                    aria-label="Search"
-                                                />
-                                            </div>
-                                        </MDBFormInline>
+                                        {this.props.isLoggedIn ?
+                                            <a onClick={this.props.handleLogout} >
+                                                <LogoutOutlined /> {' '}Logout
+                                            </a> : null }
                                     </MDBNavItem>
                                 </MDBNavbarNav>
                             </MDBCollapse>

@@ -1,10 +1,19 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import "./form.css";
-import { Descriptions, Button } from "antd";
+import { Descriptions, Button, Modal } from "antd";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
-import { robot, prone } from "../constants";
-import { setEstimateTime, setMoney } from "../actions";
+import { Link, Redirect } from "react-router-dom";
+import axios from "axios";
+import { setOrderID } from "../actions";
+import history from "../history";
+import {TOKEN_KEY} from "../constants";
+
+const parseTime = (time) => {
+  const totalMin = time * 60;
+  const hour = Math.floor(totalMin / 60);
+  const min = Math.floor(totalMin % 60);
+  return `${hour} hours ${min} minutes`;
+};
 
 const FormFour = (props) => {
   const {
@@ -19,28 +28,52 @@ const FormFour = (props) => {
     receiverAddress,
     receiverZip,
     shippingMethod,
-    distance,
-    secondDistance,
     estimateTime,
     money,
+    directions,
   } = props;
-  useEffect(() => {
-    if (shippingMethod === "Robot") {
-      props.setEstimateTime(
-        distance / robot.KMPerHour + secondDistance / robot.KMPerHour
-      );
-      props.setMoney(
-        distance * robot.dollarPerKM + secondDistance * robot.dollarPerKM
-      );
+
+  const [visible, setVisible] = useState(false);
+  const [bRedirect, setRedirect] = useState(false);
+  const submitOrder = () => {
+    let route = null;
+    const token = localStorage.getItem(TOKEN_KEY);
+    if (shippingMethod == "Robot") {
+      console.log(shippingMethod);
+      route = directions.map((direction) => {
+        return {
+          lat: direction.lat(),
+          lng: direction.lng(),
+        };
+      });
+      console.log("route => ", route);
     } else {
-      props.setEstimateTime(
-        distance / prone.KMPerHour + secondDistance / prone.KMPerHour
-      );
-      props.setMoney(
-        distance * prone.dollarPerKM + secondDistance * prone.dollarPerKM
-      );
+      route = directions;
+      console.log("route => ", route);
     }
-  }, []);
+    axios
+      .post("http://3.129.204.140/laioffer/placingorder", {
+        dispatcher: dispatcher,
+        start: senderAddress,
+        destination: receiverAddress,
+        route: route,
+        method: shippingMethod,
+      },{
+        headers: {
+          Authorization: token
+      }})
+      .then(function (response) {
+        console.log("submit response--> ", response.data);
+        const obj = response.data;
+        props.setOrderID(obj.tracking_number);
+        history.push('/success');
+        //redirect();
+      })
+      .catch(function (error) {
+        console.log(error);
+        history.push('/failure');
+      });
+  };
 
   const data = (() => {
     if (!render) {
@@ -52,8 +85,8 @@ const FormFour = (props) => {
         Receiver_Phone: receiverPhone,
         Receiver_Address: `${receiverAddress}, San Francisco, CA, ${receiverZip}`,
         Shipping_Method: shippingMethod,
-        Estimate_Time: `${estimateTime} hr`,
-        money: `$${money}`,
+        Estimate_Time: parseTime(estimateTime),
+        price: `$${Number.parseFloat(money).toFixed(2)}`,
       };
     }
     return {
@@ -65,10 +98,28 @@ const FormFour = (props) => {
       Receiver_Phone: receiverPhone,
       Receiver_Address: `${receiverAddress}, San Francisco, CA, ${receiverZip}`,
       Shipping_Method: shippingMethod,
-      Estimate_Time: `${estimateTime} hr`,
-      money: `${money}`,
+      Estimate_Time: parseTime(estimateTime),
+      price: `$${Number.parseFloat(money).toFixed(2)}`,
     };
   })();
+
+  const redirect = () => {
+    setRedirect(true);
+  }
+
+  const showModal = () => {
+    setVisible(true);
+  };
+
+  const handleOk = (e) => {
+    submitOrder();
+    setVisible(false);
+  };
+
+  const handleCancel = (e) => {
+    console.log(e);
+    setVisible(false);
+  };
 
   const renderAll = (() => {
     const arr = [];
@@ -81,10 +132,14 @@ const FormFour = (props) => {
     }
     return arr;
   })();
-
+  if (bRedirect) {
+    return <Redirect to="/dashboard"/>;
+  }
   return (
     <div className="form-container ">
-      <Descriptions title="User Info">{renderAll}</Descriptions>
+      <Descriptions className="description-container" title="User Info">
+        {renderAll}
+      </Descriptions>
       <br />
       <br />
       <div className="btn-group">
@@ -93,11 +148,17 @@ const FormFour = (props) => {
             Previous
           </Button>
         </Link>
-        <Link to="/form/4">
-          <Button className="btn-right" type="primary" htmlType="submit">
-            Submit
-          </Button>
-        </Link>
+        <Button type="primary" onClick={showModal}>
+          Submit
+        </Button>
+        <Modal
+          title="Basic Modal"
+          visible={visible}
+          onOk={handleOk}
+          onCancel={handleCancel}
+        >
+          <p>Are you sure you want to submit this form?</p>
+        </Modal>
       </div>
     </div>
   );
@@ -116,12 +177,9 @@ const mapStateToProps = (state) => {
     receiverAddress: state.order.receiverAddress,
     receiverZip: state.order.receiverZip,
     shippingMethod: state.order.shippingMethod,
-    distance: state.route.distance,
-    secondDistance: state.route.secondDistance,
     money: state.route.money,
     estimateTime: state.route.estimateTime,
+    directions: state.route.directions,
   };
 };
-export default connect(mapStateToProps, { setEstimateTime, setMoney })(
-  FormFour
-);
+export default connect(mapStateToProps, { setOrderID })(FormFour);

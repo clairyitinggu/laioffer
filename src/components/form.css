@@ -14,11 +14,26 @@
   width: 50%;
 }
 
+.success-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  align-items: center;
+  text-align: center;
+}
+
+.description-container {
+  border: 1px #ccc solid;
+  border-radius: 1px;
+  background-color: #fff;
+}
+
 .route-container {
   display: flex;
   justify-content: space-between;
   padding: 0;
   width: 100%;
+  height :900px;
 }
 
 .form-container {
