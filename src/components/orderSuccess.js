@@ -17,12 +17,16 @@ const orderSuccess = (props) => {
         title="Your order is complete successfully!"
         subTitle={`Order number: ${props.orderID} You can track your order information in tracking now.`}
         extra={[
-          <Button type="primary" key="console" onClick={goTracking}>
-            Go Tracking
-          </Button>,
-          <Button key="buy" onClick={goDashBoard}>
-            Back To homepage
-          </Button>,
+            <a href = "./form/1">
+              <Button type="primary" key="console">
+                Go Tracking
+              </Button>
+            </a>,
+            <a href = "../dashboard">
+              <Button key="buy" >
+                Back To homepage
+              </Button>,
+            </a>,
         ]}
       />
     </div>

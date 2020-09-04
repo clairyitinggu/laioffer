@@ -12,6 +12,7 @@ import {
 } from 'mdbreact';
 import {Link} from "react-router-dom";
 import LearnMore from "./LearnMore";
+import axios from "axios";
 
 
 class Login extends Component {
@@ -35,16 +36,17 @@ class Login extends Component {
     }
 
     sendForm = () => {
-        fetch('http://3.129.204.140/laioffer/login', {
-            method: 'POST',
-            mode:'no-cors',
-            body: JSON.stringify({
+        axios.post('http://3.129.204.140/laioffer/login', {
                 username: this.state.username,
-                password: this.state.password
+                password: this.state.password,
+             })
+            .then(response => {
+                console.log('login -->', response)
+                this.props.handleLoginSucceed(response.data.token)
             })
-        })
-            .then(res => res.json())
-            .catch(err => console.log(err));
+            .catch(error => {
+                console.log('err in fetch history -> ', error);
+            })
     }
 
     render(){
