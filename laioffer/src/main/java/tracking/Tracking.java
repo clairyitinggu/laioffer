@@ -9,6 +9,12 @@ import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.DecodedJWT;
+
 import database.MySQLDBConnection;
 import entity.Order;
 import entity.Robot;
@@ -34,11 +40,21 @@ public class Tracking extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		HttpSession session = request.getSession(false);
-		if (session == null) {
-			response.setStatus(403);
-			return;
-		}
+    	try {
+    		String token = request.getHeader("Authorization");
+    	    Algorithm algorithm = Algorithm.HMAC256("secret");
+    	    JWTVerifier verifier = JWT.require(algorithm)
+    	        .withIssuer("auth0")
+    	        .acceptExpiresAt(1800)
+    	        .build(); //Reusable verifier instance
+    	    DecodedJWT jwt = verifier.verify(token);
+    	} catch (JWTVerificationException exception){
+    		response.setStatus(403);
+    		return;
+    	} catch (Exception e) {
+    		response.setStatus(403);
+    		return;
+    	}
 		String trackingNumber = request.getParameter("tracking_number");
 
 		MySQLDBConnection connection = new MySQLDBConnection();

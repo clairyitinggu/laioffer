@@ -15,6 +15,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.DecodedJWT;
+
 import database.MySQLDBConnection;
 import entity.Order;
 import entity.Robot;
@@ -48,17 +54,28 @@ public class PlacingOrder extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		HttpSession session = request.getSession(false);
-		if (session == null) {
-			response.setStatus(403);
-			return;
-		}
+		String username = "";
+    	try {
+    		String token = request.getHeader("Authorization");
+    	    Algorithm algorithm = Algorithm.HMAC256("secret");
+    	    JWTVerifier verifier = JWT.require(algorithm)
+    	        .withIssuer("auth0")
+    	        .acceptExpiresAt(1800)
+    	        .build(); //Reusable verifier instance
+    	    DecodedJWT jwt = verifier.verify(token);
+    	    username = jwt.getClaim("username").asString();
+    	} catch (JWTVerificationException exception){
+    		response.setStatus(403);
+    		return;
+    	} catch (Exception e) {
+    		response.setStatus(403);
+    		return;
+    	}
 		
 		JSONObject input = new JSONObject(IOUtils.toString(request.getReader()));
 		JSONObject object = new JSONObject();
 		
 		try {
-			String username = (String)session.getAttribute("username");
 			String start = input.getString("start");
 			String destination = input.getString("destination");
 			String method = input.getString("method");

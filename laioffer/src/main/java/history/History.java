@@ -12,6 +12,12 @@ import javax.servlet.http.HttpSession;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.DecodedJWT;
+
 import database.MySQLDBConnection;
 import entity.Order;
 import entity.Robot;
@@ -37,13 +43,23 @@ public class History extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		HttpSession session = request.getSession(false);
-		if (session == null) {
-			response.setStatus(403);
-			return;
-		}
-		String username = (String)session.getAttribute("username");
-		System.out.print(username);
+		String username = "";
+    	try {
+    		String token = request.getHeader("Authorization");
+    	    Algorithm algorithm = Algorithm.HMAC256("secret");
+    	    JWTVerifier verifier = JWT.require(algorithm)
+    	        .withIssuer("auth0")
+    	        .acceptExpiresAt(1800)
+    	        .build(); //Reusable verifier instance
+    	    DecodedJWT jwt = verifier.verify(token);
+    	    username = jwt.getClaim("username").asString();
+    	} catch (JWTVerificationException exception){
+    		response.setStatus(403);
+    		return;
+    	} catch (Exception e) {
+    		response.setStatus(403);
+    		return;
+    	}
 		
 		MySQLDBConnection connection = new MySQLDBConnection();
 		List<Order> orders = connection.getHistory(username);
