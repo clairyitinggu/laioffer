@@ -15,12 +15,17 @@ const orderFailure = () => {
         status="warning"
         title="There are some problems submitting the form."
         extra={[
-          <Button type="primary" key="console" onClick={fillAgain}>
-            Fill Again
-          </Button>,
-          <Button key="buy" onClick={goDashBoard}>
-            Back To homepage
-          </Button>,
+          <a href="/form/1">
+            <Button type="primary" key="console" onClick={fillAgain}>
+              Fill Again
+            </Button>
+          </a>,
+          <a href="/">
+            <Button key="buy" onClick={goDashBoard}>
+              Back To homepage
+            </Button>
+            ,
+          </a>,
         ]}
       />
     </div>

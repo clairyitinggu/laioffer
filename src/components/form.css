@@ -26,6 +26,9 @@
   border: 1px #ccc solid;
   border-radius: 1px;
   background-color: #fff;
+  color: white;
+  position: relative;
+  z-index: 1;
 }
 
 .route-container {
@@ -42,6 +45,9 @@
   width: 50vw;
   border: 1px #ccc solid;
   border-radius: 2px;
+  height: fit-content;
+  position: relative;
+  z-index: 1;
 }
 
 /* .form-container h2 {

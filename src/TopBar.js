@@ -68,7 +68,7 @@ class TopBar extends React.Component {
                   </MDBNavItem>
                 </MDBNavbarNav>
                 <MDBNavbarNav right>
-                  <MDBNavItem>
+                  <MDBNavItem className="logout">
                     {this.props.isLoggedIn ? (
                       <a onClick={this.props.handleLogout}>
                         <LogoutOutlined /> Logout

@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { Result, Button } from "antd";
 import history from "../history";
+import "../assets/css/style.css"
 
 const orderSuccess = (props) => {
   const goDashBoard = () => {
@@ -14,8 +15,8 @@ const orderSuccess = (props) => {
     <div className="success-container">
       <Result
         status="success"
-        title="Your order is complete successfully!"
-        subTitle={`Order number: ${props.orderID} You can track your order information in tracking now.`}
+        title={<h1 style={{color: "#fff"}}>Your order is complete successfully!</h1>}
+        subTitle={<div style={{color: "#fff"}}>`Order number: ${props.orderID} You can track your order information in tracking now.`</div>} 
         extra={[
           <a href="/tracking">
             <Button type="primary" key="console" onClick={goTracking}>

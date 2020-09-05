@@ -88,13 +88,7 @@ class HistoryTable extends Component {
                                                 clickEvent : () => this.rowEvents(item.status,item.tracking_number,item.method)
                                  }})
                     }});
-
-                    // this.setState({data : {columns : this.state.data.columns, rows : this.state.data.rows.map(item => {return {
-                    //             tracking_number: response.data.orders.tracking_number,
-                    //             clickEvent : () => this.rowEvents(item.tracking_number)
-                    //         }})
-                    // }});
-
+                    
                     console.log('state data: ', this.state.data);
                 })
                 .catch(error => {
@@ -109,13 +103,14 @@ class HistoryTable extends Component {
         return (
             <MDBDataTable
                 scrollY
+                hover
                 maxHeight="180px"
                 striped
                 bordered
                 small
                 data={this.state.data}
-                //theadTextWhite
-                //tbodyTextWhite
+                theadTextWhite
+                tbodyTextWhite
             />
         );
     }

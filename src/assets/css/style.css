@@ -59,6 +59,7 @@ h6 {
 
 
 #classicformpage .view::before,
+.OrderPageBackground,
 .OrderPageBackground::before {
 	content: '';
 	position: absolute;
@@ -66,7 +67,7 @@ h6 {
 	left: 0;
 	width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.45);
+  background: rgba(0,0,0,0.5);
 }
 
 #classicformpage .view {
@@ -128,4 +129,12 @@ h6 {
     background-size: cover;
     background-position: center center;
     height: auto;
+  }
+
+  .success-container {
+    z-index: 10;
+  }
+
+  .logout {
+    color: white;
   }
