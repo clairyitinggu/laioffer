@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { MDBDataTable } from 'mdbreact';
 import axios from 'axios';
-import {HISTORY} from "../constants";
+import {HISTORY, TOKEN_KEY} from "../constants";
 
 class HistoryTable extends Component {
     state = {
@@ -32,6 +32,12 @@ class HistoryTable extends Component {
                     field: 'robot_id',
                     sort: 'asc',
                     width: 200
+                },
+                {
+                    label: 'Destination',
+                    field: 'destination',
+                    sort: 'asc',
+                    width: 200
                 }
 
             ],
@@ -47,22 +53,24 @@ class HistoryTable extends Component {
 
         }
     }
-    rowEvents = (params) => {
-        console.log(params);
+    rowEvents = (status,trackNum,method) => {
+        //console.log(params);
+        if (status == 'shipping')
+        this.props.rowEvents(trackNum,method);
     };
 
     componentDidMount() {
         if (this.state.data.rows[0].OrderNum === 'N/A') {
             console.log("load data");
             const url = `${HISTORY}`;
+            const token = localStorage.getItem(TOKEN_KEY);
             this.setState({
                 isLoadingList: true
             });
             axios.get(url, {
-                params: {
-                    username : 1111
-                },
-
+                headers: {
+                    Authorization: token
+                }
             })
                 .then(response => {
                     console.log('response->',response.data)
@@ -77,7 +85,7 @@ class HistoryTable extends Component {
                         data : { columns : this.state.data.columns,
                                  rows : this.state.data.rows.map(item => {return {
                                                 ...item,
-                                                clickEvent : () => this.rowEvents(item.tracking_number)
+                                                clickEvent : () => this.rowEvents(item.status,item.tracking_number,item.method)
                                  }})
                     }});
 
@@ -92,8 +100,6 @@ class HistoryTable extends Component {
                 .catch(error => {
                     console.log('err in fetch history -> ', error);
                 })
-        } else {
-
         }
 
     }
@@ -108,8 +114,8 @@ class HistoryTable extends Component {
                 bordered
                 small
                 data={this.state.data}
-                theadTextWhite
-                tbodyTextWhite
+                //theadTextWhite
+                //tbodyTextWhite
             />
         );
     }

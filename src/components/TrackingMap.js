@@ -2,26 +2,52 @@ import React, {Component} from 'react';
 import {withScriptjs, withGoogleMap, GoogleMap, Polyline,} from "react-google-maps";
 import RobotMarker from "./RobotMarker";
 class NormalTrackingMap extends Component {
-    path = [
-        {lat: 41, lng: -87},
-        {lat: 41.1, lng: -87.1},
-        {lat: 41.2, lng: -87.2},
-        {lat: 42, lng: -88},
-        {lat: 44, lng: -90}
-    ];
+    state = {
+        lat : 37.71909,
+        lng : -122.45431,
+        path: [],
+        zoom: 13
+    };
+
+    updateCoordinate = (lat,lng,path) => {
+        console.log('Geo: ',lat,lng,path);
+        this.setState(presState => ({
+            lat: lat,
+            lng: lng,
+            path: path,
+            zoom: 18
+        }))
+    }
+
+    resetTrackNum = () => {
+        console.log('Delivered');
+        this.props.resetTrackNum(0);
+    }
+
     render() {
-        const { lat, lng } = {lat: 41, lng: -87}
+        const {lat,lng,zoom,path} = this.state;
+        //console.log('zoom: ',path);
         return (
 
             <GoogleMap
                 ref={this.getMapRef}
-                defaultZoom={8}
-                defaultCenter={{lat , lng}}
+                // defaultZoom={zoom}
+                defaultCenter={{lat: 37.71909,lng: -122.45431}}
+                zoom = {zoom}
+                center={{lat,lng}}
             >
                 {
-                    <RobotMarker />
+                    <RobotMarker
+                        trackNum = {this.props.trackNum}
+                        method = {this.props.method}
+                        updateLoc = {this.updateCoordinate}
+                        resetTrack = {this.resetTrackNum}
+                    />
                 }
-                <Polyline path={this.path} options={{ strokeColor: "#FF0000 " }} />
+                {
+                    this.props.trackNum == 0 ? <div></div> : <Polyline path={path} options={{ strokeColor: "#FF0000 " }} />
+                }
+
             </GoogleMap>
         );
     }

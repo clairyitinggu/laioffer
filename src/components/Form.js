@@ -1,5 +1,5 @@
 import React from "react";
-import { Router, Route } from "react-router-dom";
+import { Router, Route , Redirect} from "react-router-dom";
 import { Provider } from "react-redux";
 import { createStore, applyMiddleware } from "redux";
 import "./form.css";
@@ -22,7 +22,7 @@ export default () => {
     return (
       <div className="map-container">
         <Map
-          googleMapURL="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE&libraries=geometry,drawing,places"
+          googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyCU8fQzt4X7lSIsPmFvrxYLzBrRGVT3FSE&libraries=geometry,drawing,places"
           loadingElement={<div style={{ height: `100%` }} />}
           containerElement={<div style={{ height: `70vh` }} />}
           mapElement={<div style={{ height: `100%` }} />}

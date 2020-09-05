@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import "./form.css";
 import { Descriptions, Button, Modal } from "antd";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import axios from "axios";
 import { setOrderID } from "../actions";
 import history from "../history";
+import {TOKEN_KEY} from "../constants";
 
 const parseTime = (time) => {
   const totalMin = time * 60;
@@ -32,17 +33,13 @@ const FormFour = (props) => {
     directions,
   } = props;
 
+  const [visible, setVisible] = useState(false);
+  const [bRedirect, setRedirect] = useState(false);
   const submitOrder = () => {
     let route = null;
+    const token = localStorage.getItem(TOKEN_KEY);
     if (shippingMethod == "Robot") {
       console.log(shippingMethod);
-      console.log("Start: ", directions[0].lat(), ":", directions[0].lng());
-      console.log(
-        "Dis: ",
-        directions[directions.length - 1].lat(),
-        ":",
-        directions[directions.length - 1].lng()
-      );
       route = directions.map((direction) => {
         return {
           lat: direction.lat(),
@@ -55,17 +52,22 @@ const FormFour = (props) => {
       console.log("route => ", route);
     }
     axios
-      .post("http://localhost:8080/laioffer/placingorder", {
-        username: "1111",
+      .post("http://3.129.204.140/laioffer/placingorder", {
+        dispatcher: dispatcher,
         start: senderAddress,
         destination: receiverAddress,
         route: route,
         method: shippingMethod,
-      })
+      },{
+        headers: {
+          Authorization: token
+      }})
       .then(function (response) {
-        const obj = JSON.parse(response);
+        console.log("submit response--> ", response.data);
+        const obj = response.data;
         props.setOrderID(obj.tracking_number);
         history.push('/success');
+        //redirect();
       })
       .catch(function (error) {
         console.log(error);
@@ -101,7 +103,9 @@ const FormFour = (props) => {
     };
   })();
 
-  const [visible, setVisible] = useState(false);
+  const redirect = () => {
+    setRedirect(true);
+  }
 
   const showModal = () => {
     setVisible(true);
@@ -128,7 +132,9 @@ const FormFour = (props) => {
     }
     return arr;
   })();
-
+  if (bRedirect) {
+    return <Redirect to="/dashboard"/>;
+  }
   return (
     <div className="form-container ">
       <Descriptions className="description-container" title="User Info">

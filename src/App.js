@@ -1,18 +1,41 @@
 import React from "react";
 import Main from './Main';
 import TopBar from "./TopBar";
-
+import { TOKEN_KEY} from "./constants";
 
 class ClassicFormPage extends React.Component {
-  render() {
-    return (
-        <div id="classicformpage">
-          <TopBar />
+    state = {
+        isLoggedIn: Boolean(localStorage.getItem(TOKEN_KEY)),
+    }
 
-          <Main />
-      </div>
-    );
-  }
+    handleLoginSucceed = (token) => {
+        console.log("store token: ", token);
+        localStorage.setItem(TOKEN_KEY, token)
+        this.setState({isLoggedIn: true});
+    }
+
+    handleLogout = () => {
+        console.log("logout");
+        localStorage.removeItem(TOKEN_KEY);
+        this.setState({isLoggedIn: false});
+    }
+
+    render() {
+        return (
+            <div id="classicformpage">
+                <TopBar
+                    handleLogout={this.handleLogout}
+                    isLoggedIn={this.state.isLoggedIn}
+                />
+
+                <Main
+                    handleLogout={this.handleLogout}
+                    handleLoginSucceed={this.handleLoginSucceed}
+                    isLoggedIn={this.state.isLoggedIn}
+                />
+            </div>
+        );
+    }
 }
 
 export default ClassicFormPage;

@@ -16,10 +16,6 @@ class Dashboard extends React.Component {
         collapseID: "",
         isLoggedIn: false
     };
-    handleLoginSucceed = () => {
-        // localStorage.setItem(TOKEN_KEY, token)
-        this.setState({ isLoggedIn: true });
-    }
 
     toggleCollapse = (collapseID) => () =>
         this.setState((prevState) => ({
@@ -60,20 +56,17 @@ class Dashboard extends React.Component {
                         <LearnMore />
                         <div>
                             <MDBAnimation type="fadeInRight" delay=".3s">
-                                <Link to="/form/1">
+                                <a href="/form/1">
                                     <MDBBtn rounded outline className="btn-block" color="info" size="lg" style={{marginRight: "200px", marginBottom:"80px"}}>Submit a New Order</MDBBtn>
-                                </Link>
-                                <Link to="/tracking">
+                                </a>
+                                <a href="/tracking">
                                     <MDBBtn rounded outline className="btn-block" color="info" size="lg" style={{marginRight: "200px"}}>Order History</MDBBtn>
-                                </Link>
+                                </a>
                             </MDBAnimation>
                         </div>
                     </MDBContainer>
                 </div>
             </MDBView>
-
-
-
 
         );
     }

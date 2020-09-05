@@ -30,7 +30,10 @@ class Register extends Component {
                 password: this.state.password
             })
         })
-            .then(res => res.json())
+            .then(res => {
+                console.log(res);
+                res.json();
+            })
             .catch(err => console.log("can't register"));
     }
 
