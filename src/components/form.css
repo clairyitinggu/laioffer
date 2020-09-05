@@ -44,6 +44,15 @@
   border-radius: 2px;
 }
 
+/* .form-container h2 {
+  color: #fff;
+} */
+
+.site-input-group-wrapper {
+  z-index: 100;
+}
+
+
 .site-input-group-wrapper .site-input-split {
   background-color: #fff;
 }

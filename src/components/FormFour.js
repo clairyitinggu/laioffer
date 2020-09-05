@@ -103,10 +103,6 @@ const FormFour = (props) => {
     };
   })();
 
-  const redirect = () => {
-    setRedirect(true);
-  }
-
   const showModal = () => {
     setVisible(true);
   };

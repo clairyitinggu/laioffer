@@ -1,6 +1,5 @@
 import React from "react";
-import {MDBContainer, MDBRow, MDBCol, MDBBtn, MDBAnimation, MDBCard, MDBCardBody, MDBIcon, MDBInput} from 'mdbreact';
-import {Link, Route} from "react-router-dom";
+import { MDBRow, MDBBtn, MDBAnimation } from 'mdbreact';
 
 const LearnMore = () => {
     return (
@@ -10,7 +9,7 @@ const LearnMore = () => {
                 delay=".3s"
                 className=" text-center text-md-left col-md-6 mt-xl-5 mb-5 text-on-left"
             >
-                <h1 className="h1-responsive font-weight-bold" style={{color: "lightgray"}}>
+                <h1 className="h1-responsive font-weight-bold" style={{color: "#fff"}}>
                     We make your life easier!
                 </h1>
                 <hr className="hr-light" />

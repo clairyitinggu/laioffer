@@ -33,4 +33,3 @@ export const prone = {
 }
 export const TOKEN_KEY = 'TOKEN_KEY';
 export const HISTORY = 'http://3.129.204.140/laioffer/history';
-//export const HISTORY = 'http://localhost:8080/laioffer/history';

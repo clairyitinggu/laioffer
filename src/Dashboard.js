@@ -1,14 +1,10 @@
 import React from "react";
 import {
-    MDBMask,
     MDBBtn,
     MDBView,
     MDBContainer,
     MDBAnimation,
 } from "mdbreact";
-import {
-    Link
-} from 'react-router-dom';
 import LearnMore from "./LearnMore";
 
 class Dashboard extends React.Component {
@@ -47,7 +43,7 @@ class Dashboard extends React.Component {
 
         return (
             <MDBView>
-                <MDBMask className="justify-content-center align-items-center gradient" />
+                {/* <MDBMask className="justify-content-center align-items-center gradient" /> */}
                 <div>
                     <MDBContainer
                         style={{ height: "100%", width: "100%", paddingTop: "10rem" }}

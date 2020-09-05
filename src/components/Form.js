@@ -1,8 +1,9 @@
 import React from "react";
-import { Router, Route , Redirect} from "react-router-dom";
+import { Router, Route } from "react-router-dom";
 import { Provider } from "react-redux";
 import { createStore, applyMiddleware } from "redux";
 import "./form.css";
+import "../assets/css/style.css";
 import Map from "./Map";
 import FormOne from "./FormOne";
 import FormTwo from "./FormTwo";

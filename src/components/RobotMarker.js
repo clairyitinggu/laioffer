@@ -23,7 +23,6 @@ class RobotMarker extends Component {
         this.props.updateLoc(lat,lng,path);
     }
     geoUpdate = (trackNum) => {
-        console.log('verify:',this.props.trackNum);
         const token = localStorage.getItem(TOKEN_KEY);
         if (this.props.trackNum != 0) {
             axios.get('http://3.129.204.140/laioffer/location', {
@@ -60,10 +59,8 @@ class RobotMarker extends Component {
     }
     render() {
         const { lat, lng ,path} = this.state;
-        //console.log("path: ",path[0].lng);
         let destLat = path[path.length - 1].lat;
         let destlng = path[path.length - 1].lng;
-        //console.log('render:', lat,': ', lng);
         let markerurl = this.props.method == 'robot' ? robotMarkerUrl : droneMarkerUrl;
         let destMarkerurl = this.props.trackNum == 0 ? '' : destMarkerUrl;
         const customIcon = {
