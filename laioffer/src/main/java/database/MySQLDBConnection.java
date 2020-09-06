@@ -12,7 +12,6 @@ import entity.Order;
 import entity.Order.OrderBuilder;
 import entity.Robot;
 import entity.Robot.RobotBuilder;
-import entity.User;
 
 /**
  * This class is client access to mysql database

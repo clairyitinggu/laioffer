@@ -5,7 +5,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -18,7 +17,6 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 
 import database.MySQLDBConnection;
 import entity.Order;
-import robotManagement.Point;
 import robotManagement.RobotManagement;
 import rpcHelper.RpcHelper;
 

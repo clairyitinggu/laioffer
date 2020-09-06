@@ -148,9 +148,14 @@ public class RobotSimulator extends TimerTask implements Runnable{
 	
 	private JSONArray robotRoute() {
 		JSONArray array = new JSONArray();
+		JSONObject object = new JSONObject();
+		object.put("lat", lat);
+		object.put("lng", lng);
+		array.put(object);
 		
-		for(int i = index; i < route.size(); i++) {
-			JSONObject object = new JSONObject();
+		
+		for(int i = index+1; i < route.size(); i++) {
+			object = new JSONObject();
 			object.put("lat", route.get(i).getLat());
 			object.put("lng", route.get(i).getLng());
 			array.put(object);

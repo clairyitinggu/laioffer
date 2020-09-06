@@ -1,6 +1,6 @@
 package robotManagement;
 
-import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,10 +9,8 @@ import java.util.Timer;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import robotManagement.Point;
 import database.MySQLDBConnection;
 import entity.Robot;
-import entity.Robot.RobotBuilder;
 
 /**
  * This class would managing the set of robots

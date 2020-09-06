@@ -8,7 +8,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
@@ -57,6 +56,7 @@ public class PlacingOrder extends HttpServlet {
 		String username = "";
     	try {
     		String token = request.getHeader("Authorization");
+    		System.out.println("token: " + token);
     	    Algorithm algorithm = Algorithm.HMAC256("secret");
     	    JWTVerifier verifier = JWT.require(algorithm)
     	        .withIssuer("auth0")
